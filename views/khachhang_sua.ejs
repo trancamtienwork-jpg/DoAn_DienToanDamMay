@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <%- include('partials/head') %>
+</head>
+
+<body>
+<%- include('partials/navbar') %>
+
+<div class="container page-shell">
+
+    <div class="page-hero-mini mb-4">
+        <h1 class="page-title">Sửa khách hàng</h1>
+    </div>
+
+    <div class="premium-panel p-4">
+
+        <form action="/khachhang/sua/<%= khach._id %>" method="POST">
+
+            <div class="mb-3">
+                <label>Họ tên</label>
+                <input type="text" name="HoVaTen" class="form-control"
+                       value="<%= khach.HoVaTen %>">
+            </div>
+
+            <div class="mb-3">
+                <label>SĐT</label>
+                <input type="text" name="SoDienThoai" class="form-control"
+                       value="<%= khach.SoDienThoai %>">
+            </div>
+
+            <div class="mb-3">
+                <label>CCCD</label>
+                <input type="text" name="CCCD" class="form-control"
+                       value="<%= khach.CCCD %>">
+            </div>
+
+            <div class="mb-3">
+                <label>Địa chỉ</label>
+                <input type="text" name="DiaChi" class="form-control"
+                       value="<%= khach.DiaChi %>">
+            </div>
+
+            <button class="btn btn-warning">Cập nhật</button>
+            <a href="/khachhang" class="btn btn-outline-light">Quay lại</a>
+
+        </form>
+
+    </div>
+
+</div>
+
+<%- include('partials/footer') %>
+<%- include('partials/javascript') %>
+
+</body>
+</html>

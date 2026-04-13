@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <%- include('partials/head') %>
+</head>
+
+<body>
+    <%- include('partials/navbar') %>
+
+    <main class="page-shell">
+        <div class="container" style="max-width: 1100px;">
+            <!-- Header trang -->
+            <div class="page-hero-mini mb-4">
+                <span class="page-kicker">THANH TOÁN</span>
+                <h1 class="page-title">Phiếu thanh toán số tiền còn lại</h1>
+                <p class="page-desc mb-0">
+                    Khách hàng đã đặt cọc trước, hệ thống tự động tính phần tiền còn lại cần thanh toán.
+                </p>
+            </div>
+
+            <!-- Thông báo hệ thống -->
+            <%- message %>
+
+            <div class="glass-card p-4 p-lg-5">
+                <!-- 
+                    Form xác nhận thanh toán:
+                    - DatCoc: mã phiếu đặt cọc liên kết
+                    - SoTien: số tiền còn lại cần thu
+                -->
+                <form action="/thanhtoan/them" method="post" class="needs-validation" novalidate>
+                    <input type="hidden" name="DatCoc" value="<%= datcoc._id %>">
+                    <input type="hidden" name="SoTien" value="<%= soTienConLai %>">
+
+                    <div class="row g-4">
+
+                        <!-- =========================
+                             CỘT TRÁI: THÔNG TIN KHÁCH / XE
+                        ========================== -->
+                        <div class="col-lg-8">
+                            <div class="row g-3">
+
+                                <!-- Khách hàng -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Khách hàng</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-person-fill"></i>
+                                        </span>
+                                        <input
+                                            class="form-control"
+                                            value="<%= datcoc.HoVaTen || datcoc.KhachHang?.HoVaTen || '---' %>"
+                                            readonly>
+                                    </div>
+                                </div>
+
+                                <!-- Mã phiếu đặt cọc -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Mã phiếu đặt cọc</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-receipt"></i>
+                                        </span>
+                                        <input class="form-control" value="<%= datcoc.MaDatCoc %>" readonly>
+                                    </div>
+                                </div>
+
+                                <!-- Tên xe -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Tên xe</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-car-front-fill"></i>
+                                        </span>
+                                        <input class="form-control" value="<%= datcoc.Xe?.TenXe || '---' %>" readonly>
+                                    </div>
+                                </div>
+
+                                <!-- Dòng xe -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Dòng xe</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-tags-fill"></i>
+                                        </span>
+                                        <input
+                                            class="form-control"
+                                            value="<%= datcoc.Xe?.DongXe?.TenDongXe || '---' %>"
+                                            readonly>
+                                    </div>
+                                </div>
+
+                                <!-- Giá xe gốc -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Giá gốc</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-cash-stack"></i>
+                                        </span>
+                                        <input
+                                            class="form-control"
+                                            value="<%= Number(giaXe || 0).toLocaleString('vi-VN') %> đ"
+                                            readonly>
+                                    </div>
+                                </div>
+
+                                <!-- Số tiền đã đặt cọc -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Đã đặt cọc</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-wallet2"></i>
+                                        </span>
+                                        <input
+                                            class="form-control"
+                                            value="<%= Number(soTienCoc || 0).toLocaleString('vi-VN') %> đ"
+                                            readonly>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- =========================
+                             CỘT PHẢI: TÓM TẮT THANH TOÁN
+                        ========================== -->
+                        <div class="col-lg-4">
+                            <div class="payment-summary h-100">
+                                <div class="summary-header">
+                                    <i class="bi bi-credit-card-2-front-fill"></i>
+                                    <span>Tóm tắt thanh toán</span>
+                                </div>
+
+                                <!-- Giá gốc -->
+                                <div class="summary-item">
+                                    <span>Giá gốc</span>
+                                    <strong>
+                                        <%= Number(giaXe || 0).toLocaleString('vi-VN') %> đ
+                                    </strong>
+                                </div>
+
+                                <!-- Tiền đã cọc -->
+                                <div class="summary-item">
+                                    <span>Đã đặt cọc</span>
+                                    <strong class="text-warning">
+                                        <%= Number(soTienCoc || 0).toLocaleString('vi-VN') %> đ
+                                    </strong>
+                                </div>
+
+                                <hr>
+
+                                <!-- Số tiền cần thanh toán -->
+                                <div class="summary-total">
+                                    <span>Số tiền cần thanh toán</span>
+                                    <h4>
+                                        <%= Number(soTienConLai || 0).toLocaleString('vi-VN') %> đ
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- =========================
+                             KHU VỰC THÔNG TIN THANH TOÁN
+                        ========================== -->
+                        <div class="col-12">
+                            <div class="section-title">
+                                <i class="bi bi-wallet-fill"></i> Thông tin thanh toán
+                            </div>
+                        </div>
+
+                        <!-- Phương thức thanh toán -->
+                        <div class="col-md-4">
+                            <label class="form-label">Phương thức thanh toán</label>
+                            <select name="PhuongThuc" class="form-select" required>
+                                <option value="TienMat">Tiền mặt</option>
+                                <option value="ChuyenKhoan">Chuyển khoản</option>
+                                <option value="The">Thẻ</option>
+                            </select>
+                        </div>
+
+                        <!-- Mã giao dịch -->
+                        <div class="col-md-4">
+                            <label class="form-label">Mã giao dịch</label>
+                            <input
+                                type="text"
+                                name="MaGiaoDich"
+                                class="form-control"
+                                placeholder="Để trống để hệ thống tự tạo">
+                        </div>
+
+                        <!-- Ngày thanh toán -->
+                        <div class="col-md-4">
+                            <label class="form-label">Ngày thanh toán</label>
+                            <input
+                                type="date"
+                                name="NgayThanhToan"
+                                class="form-control"
+                                value="<%= new Date().toISOString().split('T')[0] %>"
+                                required>
+                        </div>
+
+                        <!-- =========================
+                             KHỐI TỔNG TIỀN + NÚT XÁC NHẬN
+                        ========================== -->
+                        <div class="col-12">
+                            <div class="final-amount-box">
+                                <div>
+                                    <small class="text-uppercase">Số tiền thanh toán</small>
+                                    <h3>
+                                        <%= Number(soTienConLai || 0).toLocaleString('vi-VN') %> đ
+                                    </h3>
+                                </div>
+
+                                <!-- Nút gửi form xác nhận thanh toán -->
+                                <button type="submit" class="btn btn-success btn-lg px-4">
+                                    <i class="bi bi-check-circle-fill me-2"></i>
+                                    Xác nhận thanh toán
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <%- include('partials/footer') %>
+    <%- include('partials/javascript') %>
+</body>
+
+</html>

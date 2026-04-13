@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <%- include('partials/head') %>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+    <%- include('partials/navbar') %>
+
+    <!-- HERO FULLSCREEN -->
+    <section class="hero-slider-section">
+        <div id="heroCarousel"
+             class="carousel slide carousel-fade hero-carousel"
+             data-bs-ride="carousel"
+             data-bs-interval="3500"
+             data-bs-pause="false">
+
+            <!-- Indicators -->
+            <div class="carousel-indicators hero-indicators">
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+            </div>
+
+            <div class="carousel-inner">
+                <!-- SLIDE 1 (CÓ CHỮ) -->
+                <div class="carousel-item active">
+                    <div class="hero-slide-bg" style="background-image: url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1800&q=80');"></div>
+
+                    <div class="hero-overlay-content">
+                        <div class="container">
+                            <span class="badge badge-premium mb-3">Premium Showroom</span>
+                            <p class="hero-kicker mb-2">TCT AUTO EXPERIENCE</p>
+                            <h1>Khám phá đẳng cấp xe thể thao sang trọng</h1>
+                            <p>
+                                Website quản lý và trưng bày các dòng xe Porsche với giao diện hiện đại.
+                            </p>
+                            <div class="mt-4 d-flex gap-3 flex-wrap">
+                                <a href="/xe" class="btn btn-warning btn-lg px-4">
+                                    <i class="bi bi-car-front-fill me-2"></i>Xem danh sách xe
+                                </a>
+                                <a href="/dongxe" class="btn btn-outline-light btn-lg px-4">
+                                    <i class="bi bi-grid-3x3-gap-fill me-2"></i>Khám phá dòng xe
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDE 2 (KHÔNG CHỮ) -->
+                <div class="carousel-item">
+                    <div class="hero-slide-bg" style="background-image: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1800&q=80');"></div>
+                </div>
+
+                <!-- SLIDE 3 (KHÔNG CHỮ) -->
+                <div class="carousel-item">
+                    <div class="hero-slide-bg" style="background-image: url('https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1800&q=80');"></div>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <button class="carousel-control-prev hero-control" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+
+            <button class="carousel-control-next hero-control" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+        </div>
+    </section>
+
+    <!-- NỘI DUNG PHÍA DƯỚI -->
+    <div class="container">
+        <section class="mt-5">
+            <%- typeof message !== 'undefined' ? message : '' %>
+
+            <div class="d-flex justify-content-between align-items-end flex-wrap gap-3 mb-4">
+                <div>
+                    <h2 class="section-title mb-1">Xe nổi bật</h2>
+                    <p class="section-subtitle mb-0">Những mẫu xe được trưng bày nổi bật.</p>
+                </div>
+                <a href="/xe" class="btn btn-outline-warning">Xem tất cả</a>
+            </div>
+
+            <div class="row g-4">
+                <% xeNoiBat.forEach(x => { %>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card xe-card h-100">
+                            <div class="xe-image-wrap">
+                                <img src="<%= x.HinhAnh || 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=80' %>" alt="<%= x.TenXe %>">
+                                <span class="xe-badge"><%= x.DongXe?.TenDongXe || 'Chưa phân loại' %></span>
+                            </div>
+
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title"><%= x.TenXe %></h5>
+                                <p class="card-text text-light-emphasis mb-2">
+                                    <%= Number(x.Gia).toLocaleString('vi-VN') %> VNĐ
+                                </p>
+                                <p class="small text-secondary mb-4">Năm sản xuất: <%= x.NamSanXuat %></p>
+                                <a href="/xe/chi-tiet/<%= x._id %>" class="btn btn-outline-warning w-100 mt-auto">
+                                    Xem chi tiết
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </section>
+
+        <section class="container mt-5">
+            <h2 class="section-title mb-4">
+                <i class="bi bi-stars text-warning me-2"></i>Bài viết nổi bật
+            </h2>
+
+            <% if (baivietNoiBat && baivietNoiBat.length > 0) { %>
+                <div class="row g-4">
+                    <% baivietNoiBat.forEach(bv => { %>
+                        <div class="col-md-4">
+                            <div class="card xe-card h-100">
+
+                                <div class="xe-image-wrap">
+                                    <% if (bv.HinhAnh) { %>
+                                        <img src="<%= bv.HinhAnh %>">
+                                    <% } else { %>
+                                        <img src="https://via.placeholder.com/600x400">
+                                    <% } %>
+
+                                    <div class="xe-badge">Nổi bật</div>
+                                </div>
+
+                                <div class="card-body">
+                                    <h5 class="fw-bold"><%= bv.TieuDe %></h5>
+
+                                    <p class="text-secondary">
+                                        <%= bv.TomTat ? bv.TomTat.substring(0, 80) : '' %>...
+                                    </p>
+
+                                    <a href="/baiviet/chi-tiet/<%= bv._id %>" class="btn btn-warning w-100">
+                                        Xem chi tiết
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } else { %>
+                <p class="text-secondary">Chưa có bài viết nổi bật</p>
+            <% } %>
+        </section>
+    </div>
+
+
+<div class="premium-panel p-4 mt-4">
+    <h5>Vị trí showroom</h5>
+    <div id="map" style="height:400px; border-radius:12px;"></div>
+</div>
+
+    <%- include('partials/footer') %>
+    <%- include('partials/javascript') %>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+    const map = L.map('map').setView([10.0452, 105.7469], 15);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+
+    L.marker([10.0452, 105.7469]).addTo(map)
+        .bindPopup("<b>TCT Auto</b><br>TCT AUTO")
+        .openPopup();
+</script>
+</body>
+</html>

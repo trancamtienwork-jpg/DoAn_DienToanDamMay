@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head><%- include('partials/head') %></head>
+<body>
+<%- include('partials/navbar') %>
+
+<div class="container page-shell">
+    <% if (typeof message !== 'undefined' && message) { %>
+        <div class="mb-4 mt-3">
+            <%- message %>
+        </div>
+    <% } %>
+
+    <section class="page-hero-mini mb-4">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-4">
+            <div>
+                <span class="page-kicker">TCT AUTO MANAGEMENT</span>
+                <h1 class="page-title mb-2">Quản lý xe</h1>
+                <p class="page-desc mb-0">
+                    Quản lý các mẫu xe trong showroom dành riêng cho admin.
+                </p>
+            </div>
+
+            <div class="d-flex gap-3 flex-wrap">
+                <div class="mini-stat-box">
+                    <span class="mini-stat-label">
+                        <i class="bi bi-car-front me-1"></i>Tổng xe
+                    </span>
+                    <strong><%= xe.length %></strong>
+                </div>
+
+                <a href="/xe/them" class="btn btn-warning btn-premium">
+                    <i class="bi bi-plus-lg me-2"></i>Thêm xe
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="premium-panel">
+        <div class="premium-panel-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div>
+                <h5 class="mb-1 fw-bold">
+                    <i class="bi bi-car-front-fill me-2 text-warning"></i>Danh sách xe quản lý
+                </h5>
+                <small style="color:#b8c2cf;">Admin có thể sửa và xóa dữ liệu xe</small>
+            </div>
+
+            <div class="table-meta-chip">
+                <i class="bi bi-stars me-2"></i>Admin Inventory
+            </div>
+        </div>
+
+        <div class="card-body p-0">
+            <div class="table-responsive premium-table-wrap">
+                <table class="table premium-table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tên xe</th>
+                            <th>Dòng xe</th>
+                            <th>Giá</th>
+                            <th>Năm SX</th>
+                            <th>Màu</th>
+                            <th>Số lượng</th>
+                            <th>Ảnh</th>
+                            <th>Sửa</th>
+                            <th>Xóa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (xe && xe.length > 0) { %>
+                            <% xe.forEach((x, index) => { %>
+                                <tr>
+                                    <td><span class="index-badge"><%= index + 1 %></span></td>
+                                    <td><div class="fw-bold fs-6 text-white"><%= x.TenXe %></div></td>
+                                    <td><span class="dongxe-pill"><%= x.DongXe ? x.DongXe.TenDongXe : 'Chưa có' %></span></td>
+                                    <td class="price-text"><%= Number(x.Gia).toLocaleString('vi-VN') %> VNĐ</td>
+                                    <td><span class="year-pill"><%= x.NamSanXuat %></span></td>
+                                    <td><span class="color-badge"><%= x.MauSac || 'Chưa có' %></span></td>
+                                    <td><span class="quantity-badge"><%= x.SoLuong || 0 %></span></td>
+                                    <td>
+                                        <% if (x.HinhAnh) { %>
+                                            <img src="<%= x.HinhAnh %>" alt="xe" class="table-car-image">
+                                        <% } else { %>
+                                            <div class="no-image-box">Không có ảnh</div>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <a href="/xe/sua/<%= x._id %>" class="btn btn-sm btn-action-edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="/xe/xoa/<%= x._id %>" class="btn btn-sm btn-action-delete" onclick="return confirm('Xóa xe này?')">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="10" class="text-center py-5 text-secondary">
+                                    Chưa có dữ liệu xe
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+
+<%- include('partials/footer') %>
+<%- include('partials/javascript') %>
+</body>
+</html>

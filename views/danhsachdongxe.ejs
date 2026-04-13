@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <%- include('partials/head') %>
+</head>
+<body>
+<%- include('partials/navbar') %>
+
+<div class="container page-shell">
+    <% if (typeof message !== 'undefined' && message) { %>
+        <div class="mb-4 mt-3">
+            <%- message %>
+        </div>
+    <% } %>
+
+    <!-- HERO MINI -->
+    <section class="page-hero-mini mb-4">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-4">
+            <div>
+                <span class="page-kicker">TCT AUTO CATALOG</span>
+                <h1 class="page-title mb-2">Danh sách dòng xe</h1>
+                <p class="page-desc mb-0">
+                    Khám phá các dòng xe hiện có trong hệ thống showroom với phong cách hiện đại và sang trọng.
+                </p>
+            </div>
+
+            <div class="d-flex gap-3 flex-wrap">
+                <div class="mini-stat-box">
+                    <span class="mini-stat-label">
+                        <i class="bi bi-diagram-3 me-1"></i>Tổng dòng xe
+                    </span>
+                    <strong><%= dongxe.length %></strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DANH SÁCH DÒNG XE -->
+    <section class="premium-panel p-4 p-lg-5">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+            <div>
+                <h4 class="fw-bold mb-1">
+                    <i class="bi bi-grid-3x3-gap-fill text-warning me-2"></i>Danh mục dòng xe
+                </h4>
+                <p class="page-desc mb-0">Chọn dòng xe để xem các mẫu xe tương ứng.</p>
+            </div>
+
+            <div class="table-meta-chip">
+                <i class="bi bi-stars me-2"></i>Vehicle Categories
+            </div>
+        </div>
+
+        <% if (dongxe && dongxe.length > 0) { %>
+            <div class="row g-4">
+                <% dongxe.forEach((d) => { %>
+                    <div class="col-md-6 col-lg-4 col-xl-3">
+                        <div class="card h-100 xe-card">
+                            <div class="card-body p-4 d-flex flex-column">
+                                <div class="stat-icon mb-3">
+                                    <i class="bi bi-car-front-fill"></i>
+                                </div>
+
+                                <h5 class="fw-bold mb-2"><%= d.TenDongXe %></h5>
+
+                                <p class="text-light-emphasis mb-3" style="min-height: 72px; color: #b8bec9;">
+                                    <%= d.MoTa && d.MoTa.trim() !== '' ? d.MoTa : 'Dòng xe hiện đại, phù hợp cho showroom chuyên nghiệp.' %>
+                                </p>
+
+                                <div class="mb-4">
+                                    <span class="feature-chip">
+                                        <i class="bi bi-collection-fill text-warning me-2"></i>
+                                        <%= d.SoXe || 0 %> mẫu xe
+                                    </span>
+                                </div>
+
+                                <div class="mt-auto">
+                                    <a href="/xe?dongxe=<%= d._id %>" class="btn btn-warning w-100">
+                                        <i class="bi bi-eye me-2"></i>Xem xe thuộc dòng này
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <div class="text-center py-5">
+                <div class="glass-card p-5">
+                    <i class="bi bi-diagram-3 fs-1 text-warning d-block mb-3"></i>
+                    <h5 class="fw-bold mb-2">Chưa có dòng xe nào</h5>
+                    <p class="section-subtitle mb-0">Hiện chưa có dữ liệu dòng xe để hiển thị cho người dùng.</p>
+                </div>
+            </div>
+        <% } %>
+    </section>
+</div>
+
+<%- include('partials/footer') %>
+<%- include('partials/javascript') %>
+</body>
+</html>

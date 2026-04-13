@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <%- include('partials/head') %>
+</head>
+<body>
+
+<%- include('partials/navbar') %>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+<div class="container page-shell">
+
+    <!-- HERO MINI -->
+    <section class="page-hero-mini mb-4">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-4">
+            <div>
+                <span class="page-kicker">TCT AUTO SHOWROOM</span>
+                <h1 class="page-title mb-2">Giới thiệu</h1>
+                <p class="page-desc mb-0">
+                    Nơi hội tụ những mẫu xe đẳng cấp, hiện đại và phù hợp với phong cách sống của bạn.
+                </p>
+            </div>
+
+            <div class="table-meta-chip">
+                <i class="bi bi-stars me-2"></i>Premium Showroom
+            </div>
+        </div>
+    </section>
+
+    <!-- GIỚI THIỆU CHUNG -->
+    <section class="premium-panel p-4 p-lg-5 mb-4">
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-6">
+                <div class="glass-card p-4 h-100">
+                    <span class="page-kicker">VỀ CHÚNG TÔI</span>
+                    <h3 class="fw-bold mb-3">TCT AUTO – Đẳng cấp trong từng hành trình</h3>
+                    <p class="page-desc">
+                        TCT AUTO là showroom chuyên cung cấp các dòng xe chất lượng cao, đa dạng mẫu mã,
+                        phù hợp với nhu cầu cá nhân, gia đình và doanh nghiệp.
+                    </p>
+                    <p class="page-desc mb-0">
+                        Chúng tôi cam kết mang đến cho khách hàng trải nghiệm mua xe chuyên nghiệp, minh bạch,
+                        cùng dịch vụ hỗ trợ tận tâm từ tư vấn, lựa chọn đến hậu mãi.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="glass-card p-4 h-100 text-center">
+                    <i class="bi bi-car-front-fill text-warning" style="font-size: 80px;"></i>
+                    <h4 class="fw-bold mt-3 mb-2">Showroom xe hiện đại</h4>
+                    <p class="page-desc mb-0">
+                        Trưng bày nhiều mẫu xe nổi bật với không gian sang trọng, dễ dàng tham khảo và trải nghiệm.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THẾ MẠNH -->
+    <section class="premium-panel p-4 p-lg-5 mb-4">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+            <div>
+                <h4 class="fw-bold mb-1">
+                    <i class="bi bi-award-fill text-warning me-2"></i>Thế mạnh của chúng tôi
+                </h4>
+                <p class="page-desc mb-0">Những giá trị tạo nên sự khác biệt của TCT AUTO.</p>
+            </div>
+
+            <div class="table-meta-chip">
+                <i class="bi bi-patch-check-fill me-2"></i>Uy tín - Chất lượng
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="glass-card p-4 h-100 text-center">
+                    <i class="bi bi-car-front fs-1 text-warning d-block mb-3"></i>
+                    <h5 class="fw-bold mb-2">Đa dạng mẫu xe</h5>
+                    <p class="section-subtitle mb-0">
+                        Cung cấp nhiều dòng xe từ sedan, SUV đến xe sang và xe gia đình.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="glass-card p-4 h-100 text-center">
+                    <i class="bi bi-shield-check fs-1 text-warning d-block mb-3"></i>
+                    <h5 class="fw-bold mb-2">Chất lượng đảm bảo</h5>
+                    <p class="section-subtitle mb-0">
+                        Xe được kiểm tra kỹ lưỡng trước khi đến tay khách hàng.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="glass-card p-4 h-100 text-center">
+                    <i class="bi bi-people-fill fs-1 text-warning d-block mb-3"></i>
+                    <h5 class="fw-bold mb-2">Tư vấn tận tâm</h5>
+                    <p class="section-subtitle mb-0">
+                        Đội ngũ hỗ trợ nhiệt tình giúp bạn chọn được chiếc xe phù hợp nhất.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="glass-card p-4 h-100 text-center">
+                    <i class="bi bi-lightning-charge-fill fs-1 text-warning d-block mb-3"></i>
+                    <h5 class="fw-bold mb-2">Thủ tục nhanh chóng</h5>
+                    <p class="section-subtitle mb-0">
+                        Hỗ trợ khách hàng hoàn tất hồ sơ và quy trình mua bán nhanh gọn.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THỐNG KÊ -->
+    <section class="premium-panel p-4 p-lg-5 mb-4">
+        <div class="row g-4 text-center">
+            <div class="col-md-3">
+                <div class="glass-card p-4 h-100">
+                    <div class="fs-1 fw-bold text-warning">100+</div>
+                    <p class="page-desc mb-0">Mẫu xe đang trưng bày</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="glass-card p-4 h-100">
+                    <div class="fs-1 fw-bold text-warning">500+</div>
+                    <p class="page-desc mb-0">Khách hàng hài lòng</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="glass-card p-4 h-100">
+                    <div class="fs-1 fw-bold text-warning">5+</div>
+                    <p class="page-desc mb-0">Năm kinh nghiệm</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="glass-card p-4 h-100">
+                    <div class="fs-1 fw-bold text-warning">24/7</div>
+                    <p class="page-desc mb-0">Hỗ trợ khách hàng</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="premium-panel p-4 p-lg-5 mb-4">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-8">
+                <h3 class="fw-bold mb-2">Sẵn sàng tìm chiếc xe phù hợp với bạn?</h3>
+                <p class="page-desc mb-0">
+                    Khám phá ngay các mẫu xe nổi bật hoặc liên hệ với chúng tôi để được tư vấn chi tiết.
+                </p>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="d-flex gap-3 flex-wrap justify-content-lg-end">
+                    <a href="/xe" class="btn btn-warning">
+                        <i class="bi bi-car-front me-2"></i>Xem xe
+                    </a>
+                    <a href="/lienhe" class="btn btn-outline-light">
+                        <i class="bi bi-telephone me-2"></i>Liên hệ ngay
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<div class="premium-panel p-4 mt-4">
+    <h5>Vị trí showroom</h5>
+    <div id="map" style="height:400px; border-radius:12px;"></div>
+</div>
+<%- include('partials/footer') %>
+<%- include('partials/javascript') %>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+    const map = L.map('map').setView([10.0452, 105.7469], 15);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+
+    L.marker([10.0452, 105.7469]).addTo(map)
+        .bindPopup("<b>TCT Auto</b><br>TCT AUTO")
+        .openPopup();
+</script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head><%- include('partials/head') %></head>
+<body>
+<%- include('partials/navbar') %>
+
+<div class="container page-shell">
+    <% if (typeof message !== 'undefined' && message) { %>
+        <div class="mb-4 mt-3">
+            <%- message %>
+        </div>
+    <% } %>
+
+    <section class="page-hero-mini mb-4">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-4">
+            <div>
+                <span class="page-kicker">TCT AUTO MANAGEMENT</span>
+                <h1 class="page-title mb-2">Quản lý dòng xe</h1>
+                <p class="page-desc mb-0">
+                    Quản lý danh mục dòng xe dành riêng cho admin.
+                </p>
+            </div>
+
+            <div class="d-flex gap-3 flex-wrap">
+                <div class="mini-stat-box">
+                    <span class="mini-stat-label">
+                        <i class="bi bi-diagram-3 me-1"></i>Tổng dòng xe
+                    </span>
+                    <strong id="tongDongXe"><%= dongxe.length %></strong>
+                </div>
+
+                <a href="/dongxe/them" class="btn btn-warning btn-premium">
+                    <i class="bi bi-plus-lg me-2"></i>Thêm dòng xe
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="premium-panel">
+        <div class="premium-panel-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div>
+                <h5 class="mb-1 fw-bold">
+                    <i class="bi bi-diagram-3-fill me-2 text-warning"></i>Danh sách dòng xe
+                </h5>
+                <small style="color:#b8c2cf;">Admin có thể sửa và xóa danh mục dòng xe</small>
+            </div>
+
+            <div class="table-meta-chip">
+                <i class="bi bi-grid-3x3-gap me-2"></i>Admin Categories
+            </div>
+        </div>
+
+        <!-- THANH TÌM KIẾM -->
+        <div class="px-3 px-md-4 pt-4">
+            <div class="row g-3 align-items-center">
+                <div class="col-lg-6 col-md-8">
+                    <div class="search-box-dongxe position-relative">
+                        <i class="bi bi-search search-icon"></i>
+                        <input 
+                            type="text" 
+                            id="searchDongXe" 
+                            class="form-control form-control-premium ps-5" 
+                            placeholder="Tìm theo tên dòng xe..."
+                            autocomplete="off"
+                        />
+                        <button type="button" id="clearSearchDongXe" class="btn-clear-search" title="Xóa tìm kiếm">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-4 text-md-end">
+                    <span id="ketQuaTimKiem" class="search-result-text">
+                        Hiển thị <strong><%= dongxe.length %></strong> dòng xe
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-0 pt-3">
+            <div class="table-responsive premium-table-wrap">
+                <table class="table premium-table align-middle mb-0" id="dongXeTable">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên dòng xe</th>
+                            <th>Sửa</th>
+                            <th>Xóa</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dongXeTableBody">
+                        <% if (dongxe && dongxe.length > 0) { %>
+                            <% dongxe.forEach((d, index) => { %>
+                                <tr class="dongxe-row">
+                                    <td>
+                                        <span class="index-badge stt-cell"><%= index + 1 %></span>
+                                    </td>
+                                    <td>
+                                        <div class="fw-bold fs-6 text-white ten-dong-xe">
+                                            <%= d.TenDongXe %>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="/dongxe/sua/<%= d._id %>" class="btn btn-sm btn-action-edit">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="/dongxe/xoa/<%= d._id %>" class="btn btn-sm btn-action-delete" onclick="return confirm('Xóa dòng xe này?')">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr id="emptyDataRow">
+                                <td colspan="4" class="text-center py-5 text-secondary">
+                                    Chưa có dữ liệu dòng xe
+                                </td>
+                            </tr>
+                        <% } %>
+
+                        <!-- DÒNG KHÔNG TÌM THẤY -->
+                        <tr id="noSearchResultRow" style="display: none;">
+                            <td colspan="4" class="text-center py-5 text-secondary">
+                                <i class="bi bi-search fs-3 d-block mb-2"></i>
+                                Không tìm thấy dòng xe phù hợp
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+
+<%- include('partials/footer') %>
+<%- include('partials/javascript') %>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('searchDongXe');
+        const clearBtn = document.getElementById('clearSearchDongXe');
+        const resultText = document.getElementById('ketQuaTimKiem');
+        const rows = document.querySelectorAll('.dongxe-row');
+        const noSearchResultRow = document.getElementById('noSearchResultRow');
+        const tongDongXe = document.getElementById('tongDongXe');
+
+        function removeVietnameseTones(str) {
+            return str
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/đ/g, 'd')
+                .replace(/Đ/g, 'D');
+        }
+
+        function capNhatSTT() {
+            let visibleIndex = 1;
+            document.querySelectorAll('.dongxe-row').forEach(row => {
+                if (row.style.display !== 'none') {
+                    const sttCell = row.querySelector('.stt-cell');
+                    if (sttCell) sttCell.textContent = visibleIndex++;
+                }
+            });
+        }
+
+        function filterDongXe() {
+            const keyword = removeVietnameseTones(searchInput.value.toLowerCase().trim());
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                const tenDongXeEl = row.querySelector('.ten-dong-xe');
+                const tenDongXe = tenDongXeEl ? removeVietnameseTones(tenDongXeEl.textContent.toLowerCase()) : '';
+
+                if (tenDongXe.includes(keyword)) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            capNhatSTT();
+
+            if (keyword !== '') {
+                resultText.innerHTML = `Tìm thấy <strong>${visibleCount}</strong> dòng xe`;
+            } else {
+                resultText.innerHTML = `Hiển thị <strong>${rows.length}</strong> dòng xe`;
+            }
+
+            if (visibleCount === 0 && rows.length > 0) {
+                noSearchResultRow.style.display = '';
+            } else {
+                noSearchResultRow.style.display = 'none';
+            }
+
+            if (tongDongXe) {
+                tongDongXe.textContent = rows.length;
+            }
+
+            clearBtn.style.display = searchInput.value.trim() ? 'flex' : 'none';
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', filterDongXe);
+        }
+
+        if (clearBtn) {
+            clearBtn.addEventListener('click', function () {
+                searchInput.value = '';
+                filterDongXe();
+                searchInput.focus();
+            });
+        }
+
+        filterDongXe();
+    });
+</script>
+
+</body>
+</html>

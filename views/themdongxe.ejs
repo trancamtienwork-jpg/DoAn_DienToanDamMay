@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <%- include('partials/head') %>
+</head>
+<body>
+
+<%- include('partials/navbar') %>
+
+<div class="container page-shell">
+
+    <% if (typeof message !== 'undefined' && message) { %>
+        <%- message %>
+    <% } %>
+
+    <div class="card shadow-lg border-0 form-card">
+
+        <!-- HEADER -->
+        <div class="card-header form-header d-flex justify-content-between align-items-center">
+            <span>
+                <i class="bi bi-diagram-3-fill me-2"></i>Thêm dòng xe
+            </span>
+
+            <a href="/dongxe/quanly" class="btn btn-outline-light btn-sm">
+                <i class="bi bi-arrow-left me-1"></i>Quay lại
+            </a>
+        </div>
+
+        <!-- BODY -->
+        <div class="card-body p-4">
+
+            <form action="/dongxe/them" method="post" class="needs-validation" novalidate>
+
+                <div class="row g-4">
+
+                    <!-- Tên dòng xe -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Tên dòng xe</label>
+                        <input 
+                            type="text" 
+                            name="TenDongXe" 
+                            class="form-control" 
+                            placeholder="Ví dụ: SUV, Sedan, Coupe..." 
+                            required>
+                    </div>
+
+                    <!-- Trạng thái -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Hiển thị?</label>
+                        <select name="TrangThai" class="form-select">
+                            <option value="1">Hiển thị</option>
+                            <option value="0">Ẩn</option>
+                        </select>
+                    </div>
+
+                    <!-- Mô tả -->
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Mô tả</label>
+                        <textarea 
+                            name="MoTa" 
+                            rows="5" 
+                            class="form-control" 
+                            placeholder="Nhập mô tả dòng xe..."></textarea>
+                    </div>
+
+                </div>
+
+                <!-- BUTTON -->
+                <div class="d-flex gap-2 mt-4 flex-wrap">
+
+                    <button type="submit" class="btn btn-warning px-4 btn-submit">
+                        <i class="bi bi-cloud-upload-fill me-2"></i>Thêm dòng xe
+                    </button>
+
+                    <a href="/dongxe/quanly" class="btn btn-outline-secondary px-4">
+                        <i class="bi bi-x-circle me-2"></i>Hủy
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
+<%- include('partials/javascript') %>
+
+</body>
+</html>

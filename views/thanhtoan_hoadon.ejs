@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <%- include('partials/head') %>
+    <style>
+        .invoice-box {
+            background: #fff;
+            color: #111;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.15);
+        }
+
+        .invoice-title {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .invoice-sub {
+            color: #666;
+        }
+
+        .invoice-table td {
+            padding: 12px 0;
+            border-bottom: 1px dashed #ddd;
+        }
+
+        .invoice-total {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #d4a017;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            .invoice-print-area, .invoice-print-area * {
+                visibility: visible;
+            }
+
+            .invoice-print-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: #fff;
+                padding: 30px;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include('partials/navbar') %>
+
+    <main class="page-shell">
+        <div class="container" style="max-width: 1000px;">
+            <div class="invoice-print-area">
+                <div class="invoice-box">
+                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+                        <div>
+                            <div class="invoice-title">HÓA ĐƠN THANH TOÁN</div>
+                            <div class="invoice-sub">Showroom Porsche</div>
+                        </div>
+
+                        <div class="text-end">
+                            <div><strong>Mã giao dịch:</strong> <%= tt.MaGiaoDich %></div>
+                            <div><strong>Ngày:</strong> <%= tt.NgayThanhToan ? new Date(tt.NgayThanhToan).toLocaleDateString('vi-VN') : '---' %></div>
+                            <div><strong>Trạng thái:</strong> <%= tt.TrangThai %></div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <h5 class="fw-bold mb-3">Thông tin khách hàng</h5>
+                            <p class="mb-2"><strong>Họ tên:</strong> <%= tt.DatCoc?.HoVaTen || tt.DatCoc?.KhachHang?.HoVaTen || '---' %></p>
+                            <p class="mb-2"><strong>SĐT:</strong> <%= tt.DatCoc?.SoDienThoai || '---' %></p>
+                            <p class="mb-2"><strong>CCCD:</strong> <%= tt.DatCoc?.CCCD || '---' %></p>
+                            <p class="mb-0"><strong>Địa chỉ:</strong> <%= tt.DatCoc?.DiaChi || '---' %></p>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h5 class="fw-bold mb-3">Thông tin xe</h5>
+                            <p class="mb-2"><strong>Xe:</strong> <%= tt.DatCoc?.Xe?.TenXe || '---' %></p>
+                            <p class="mb-0"><strong>Giá gốc:</strong> <%= Number(giaXe || 0).toLocaleString('vi-VN') %> đ</p>
+                        </div>
+                    </div>
+
+                    <table class="table invoice-table">
+                        <tbody>
+                            <tr>
+                                <td>Giá gốc</td>
+                                <td class="text-end"><%= Number(giaXe || 0).toLocaleString('vi-VN') %> đ</td>
+                            </tr>
+                            <tr>
+                                <td>Đã đặt cọc</td>
+                                <td class="text-end"><%= Number(soTienCoc || 0).toLocaleString('vi-VN') %> đ</td>
+                            </tr>
+                            <tr>
+                                <td>Phương thức thanh toán</td>
+                                <td class="text-end"><%= tt.PhuongThuc || '---' %></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Số tiền thanh toán</strong></td>
+                                <td class="text-end"><strong><%= Number(soTienThanhToan || 0).toLocaleString('vi-VN') %> đ</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap gap-3">
+                        <div>
+                            <small class="text-muted">Cảm ơn quý khách đã sử dụng dịch vụ tại Showroom Porsche.</small>
+                        </div>
+
+                        <div class="invoice-total">
+                            <%= Number(soTienThanhToan || 0).toLocaleString('vi-VN') %> đ
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap gap-3 mt-4 no-print">
+                <a href="/thanhtoan" class="btn btn-outline-light">
+                    <i class="bi bi-arrow-left me-2"></i>Quay lại
+                </a>
+
+                <button onclick="window.print()" class="btn btn-warning btn-premium">
+                    <i class="bi bi-printer me-2"></i>In hóa đơn
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <%- include('partials/footer') %>
+    <%- include('partials/javascript') %>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <%- include('partials/head') %>
+</head>
+
+<body>
+    <%- include('partials/navbar') %>
+
+        <main class="page-shell">
+            <div class="container">
+                <div class="page-hero-mini mb-4">
+                    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                        <div>
+                            <span class="page-kicker">QUẢN LÝ</span>
+                            <h1 class="page-title">Đặt cọc</h1>
+                            <p class="page-desc mb-0">Theo dõi, tìm kiếm và xử lý các yêu cầu đặt cọc xe.</p>
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-3">
+                            <div class="mini-stat-box">
+                                <span class="mini-stat-label">Tổng phiếu</span>
+                                <strong>
+                                    <%= datcoc.length %>
+                                </strong>
+                            </div>
+                            <a href="/datcoc/them" class="btn btn-warning btn-premium">
+                                <i class="bi bi-plus-circle me-2"></i>Thêm đặt cọc
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <%- message %>
+
+                    <div class="premium-panel">
+                        <div class="premium-panel-header">
+                            <div
+                                class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                                <div>
+                                    <h4 class="mb-1 fw-bold">Danh sách đặt cọc</h4>
+                                    <span class="table-meta-chip">
+                                        <i class="bi bi-wallet2 me-2"></i>Quản lý phiếu đặt cọc
+                                    </span>
+                                </div>
+
+                                <form method="get" action="/datcoc" class="w-100" style="max-width: 420px;">
+                                    <div class="search-box-dongxe">
+                                        <i class="bi bi-search search-icon"></i>
+                                        <input type="text" class="form-control form-control-premium" name="tukhoa"
+                                            id="searchInput" placeholder="Tìm mã cọc, khách hàng, xe..."
+                                            value="<%= tukhoa || '' %>" />
+                                        <button type="button" class="btn-clear-search" id="clearSearchBtn">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <% if (tukhoa) { %>
+                                <div class="mt-3 search-result-text">
+                                    Kết quả tìm kiếm cho: <strong>
+                                        <%= tukhoa %>
+                                    </strong>
+                                </div>
+                                <% } %>
+                        </div>
+
+                        <div class="table-responsive premium-table-wrap">
+                            <table class="table premium-table align-middle mb-0" id="datcocTable">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Mã cọc</th>
+                                        <th>Khách hàng</th>
+                                        <th>Xe</th>
+                                        <th>Số tiền</th>
+                                        <th>Ngày đặt</th>
+                                        <th>Trạng thái</th>
+                                        <th>Ghi chú</th>
+                                        <th>Thanh toán</th>
+                                        <th>Sửa</th>
+                                        <th>Xóa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (datcoc.length> 0) { %>
+                                        <% datcoc.forEach((dc, index)=> { %>
+                                            <tr>
+                                                <td>
+                                                    <span class="index-badge">
+                                                        <%= index + 1 %>
+                                                    </span>
+                                                </td>
+                                                <td><strong>
+                                                        <%= dc.MaDatCoc %>
+                                                    </strong></td>
+                                                <td>
+                                                    <div class="fw-semibold">
+                                                        <%= dc.KhachHangRef?.HoVaTen || '---' %>
+                                                    </div>
+                                                    <small class="text-secondary">
+                                                        <%= dc.KhachHangRef?.SoDienThoai || '' %>
+                                                    </small>
+                                                </td>
+                                                <td>
+                                                    <div class="fw-semibold">
+                                                        <%= dc.Xe?.TenXe || '---' %>
+                                                    </div>
+                                                    <small class="text-secondary">
+                                                        <%= dc.Xe?.DongXe?.TenDongXe || '' %>
+                                                    </small>
+                                                </td>
+                                                <td class="price-text">
+                                                    <%= Number(dc.SoTienCoc || 0).toLocaleString('vi-VN') %> đ
+                                                </td>
+                                                <td>
+                                                    <%= dc.NgayDat ? new Date(dc.NgayDat).toLocaleDateString('vi-VN')
+                                                        : '---' %>
+                                                </td>
+                                                <td>
+                                                    <a href="/datcoc/trangthai/<%= dc._id %>"
+                                                        class="text-decoration-none">
+                                                        <% if (dc.TrangThai==='ChoXuLy' ) { %>
+                                                            <span
+                                                                class="badge bg-warning text-dark px-3 py-2 rounded-pill">Chờ
+                                                                xử lý</span>
+                                                            <% } else if (dc.TrangThai==='DaXacNhan' ) { %>
+                                                                <span class="badge bg-success px-3 py-2 rounded-pill">Đã
+                                                                    xác nhận</span>
+                                                                <% } else { %>
+                                                                    <span
+                                                                        class="badge bg-danger px-3 py-2 rounded-pill">Đã
+                                                                        hủy</span>
+                                                                    <% } %>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <small>
+                                                        <%= dc.GhiChu || '---' %>
+                                                    </small>
+                                                </td>
+
+                                                <td>
+                                                    <% if (dc.TrangThai==='DaXacNhan' ) { %>
+                                                        <a href="/thanhtoan/tao/<%= dc._id %>" class="btn btn-success"
+                                                            title="Thanh toán phần còn lại">
+                                                            <i class="bi bi-credit-card me-1"></i>
+                                                        </a>
+                                                        <% } else { %>
+                                                            <button class="btn btn-secondary" disabled
+                                                                title="Chỉ thanh toán khi phiếu đã xác nhận">
+                                                                <i class="bi bi-lock me-1"></i>
+                                                            </button>
+                                                            <% } %>
+                                                </td>
+
+                                                <td>
+                                                    <a href="/datcoc/sua/<%= dc._id %>" class="btn btn-action-edit">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="/datcoc/xoa/<%= dc._id %>" class="btn btn-action-delete"
+                                                        onclick="return confirm('Bạn có chắc muốn xóa phiếu đặt cọc <%= dc.MaDatCoc %> không?')">
+                                                        <i class="bi bi-trash"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                                                <% } else { %>
+                                                    <tr>
+                                                        <td colspan="10" class="text-center py-5 text-secondary">
+                                                            <i class="bi bi-inbox fs-2 d-block mb-2"></i>
+                                                            Chưa có dữ liệu đặt cọc.
+                                                        </td>
+                                                    </tr>
+                                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            </div>
+        </main>
+
+        <%- include('partials/footer') %>
+            <%- include('partials/javascript') %>
+
+                <script>
+                    const searchInput = document.getElementById('searchInput');
+                    const clearSearchBtn = document.getElementById('clearSearchBtn');
+
+                    function toggleClearButton() {
+                        clearSearchBtn.style.display = searchInput.value.trim() ? 'flex' : 'none';
+                    }
+
+                    searchInput.addEventListener('input', toggleClearButton);
+
+                    clearSearchBtn.addEventListener('click', function () {
+                        searchInput.value = '';
+                        toggleClearButton();
+                        window.location.href = '/datcoc';
+                    });
+
+                    toggleClearButton();
+                </script>
+</body>
+
+</html>

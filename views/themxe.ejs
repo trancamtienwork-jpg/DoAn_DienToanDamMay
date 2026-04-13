@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <!-- Nhúng phần head chung:
+         thường chứa title, meta, bootstrap css, icon, file css riêng... -->
+    <%- include('partials/head') %>
+</head>
+<body>
+
+<!-- Nhúng thanh navbar dùng chung cho toàn website -->
+<%- include('partials/navbar') %>
+
+<!-- 
+    container mt-5 pt-5:
+    - container: khung Bootstrap căn giữa nội dung
+    - mt-5: margin top lớn
+    - pt-5: padding top lớn
+-->
+<div class="container mt-5 pt-5">
+
+    <!-- 
+        Kiểm tra nếu có biến message được truyền từ server sang
+        thì hiển thị thông báo (ví dụ: thêm xe thành công / lỗi)
+    -->
+    <% if (typeof message !== 'undefined' && message) { %>
+        <%- message %>
+    <% } %>
+
+    <!-- 
+        Card chính chứa toàn bộ form thêm xe
+        - shadow-lg: đổ bóng lớn
+        - border-0: bỏ viền
+        - form-card: class custom tự định nghĩa trong CSS
+    -->
+    <div class="card shadow-lg border-0 form-card">
+
+        <!-- Header của card -->
+        <div class="card-header form-header d-flex justify-content-between align-items-center">
+            <!-- Tiêu đề form -->
+            <span>
+                <i class="bi bi-plus-circle-fill me-2"></i>Thêm xe mới
+            </span>
+
+            <!-- Nút quay về danh sách xe -->
+            <a href="/xe/quanly" class="btn btn-outline-light btn-sm">
+                <i class="bi bi-arrow-left me-1"></i>Quay lại
+            </a>
+        </div>
+
+        <!-- Body của card -->
+        <div class="card-body p-4">
+
+            <!-- 
+                Form thêm xe:
+                - action="/xe/them" -> khi submit sẽ gửi dữ liệu tới route POST /xe/them
+                - method="POST" -> gửi dữ liệu lên server
+                - enctype="multipart/form-data" -> bắt buộc nếu có upload file ảnh
+                - needs-validation + novalidate -> dùng validation Bootstrap
+            -->
+            <form action="/xe/them" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+
+                <!-- Chia form thành grid Bootstrap -->
+                <div class="row g-4">
+
+                    <!-- Tên xe -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Tên xe</label>
+                        <input 
+                            type="text" 
+                            name="TenXe" 
+                            class="form-control" 
+                            placeholder="Ví dụ: Porsche 911 Carrera" 
+                            required>
+                    </div>
+
+                    <!-- Dòng xe -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Dòng xe</label>
+
+                        <!-- 
+                            Select chọn dòng xe
+                            name="DongXe" sẽ gửi id dòng xe về server
+                        -->
+                        <select name="DongXe" class="form-select" required>
+                            <option value="">-- Chọn dòng xe --</option>
+
+                            <!-- 
+                                Kiểm tra nếu biến dongxe có dữ liệu thì lặp để đổ option
+                                Mỗi dòng xe sẽ có:
+                                - value = _id
+                                - text = TenDongXe
+                            -->
+                            <% if (typeof dongxe !== 'undefined' && dongxe.length > 0) { %>
+                                <% dongxe.forEach(dx => { %>
+                                    <option value="<%= dx._id %>"><%= dx.TenDongXe %></option>
+                                <% }) %>
+                            <% } %>
+                        </select>
+                    </div>
+
+                    <!-- Giá -->
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Giá</label>
+
+                        <!-- input-group để hiện chữ VNĐ bên phải -->
+                        <div class="input-group">
+                            <input 
+                                type="number" 
+                                name="Gia" 
+                                class="form-control" 
+                                placeholder="Nhập giá xe" 
+                                required>
+                            <span class="input-group-text">VNĐ</span>
+                        </div>
+                    </div>
+
+                    <!-- Năm sản xuất -->
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Năm sản xuất</label>
+                        <input 
+                            type="number" 
+                            name="NamSanXuat" 
+                            class="form-control" 
+                            placeholder="Ví dụ: 2025">
+                    </div>
+
+                    <!-- Màu sắc -->
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Màu sắc</label>
+                        <input 
+                            type="text" 
+                            name="MauSac" 
+                            class="form-control" 
+                            placeholder="Ví dụ: Đen, Trắng, Đỏ">
+                    </div>
+
+                    <!-- Số lượng -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Số lượng</label>
+                        <input 
+                            type="number" 
+                            name="SoLuong" 
+                            class="form-control" 
+                            value="1" 
+                            min="1">
+                    </div>
+
+                    <!-- Nổi bật -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Nổi bật?</label>
+                        <select name="NoiBat" class="form-select">
+                            <option value="0">Không</option>
+                            <option value="1">Có</option>
+                        </select>
+                    </div>
+
+                    <!-- Upload ảnh -->
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Hình ảnh xe</label>
+
+                        <!-- 
+                            upload-box là khung upload đẹp
+                            onclick để khi bấm vào box thì tự mở chọn file
+                        -->
+                        <div class="upload-box text-center p-4 upload-pro" onclick="document.getElementById('HinhAnhFile').click()">
+
+                            <!-- 
+                                Input file bị hidden đi để thay bằng giao diện đẹp hơn
+                                accept="image/*" chỉ cho chọn file ảnh
+                            -->
+                            <input type="file" id="HinhAnhFile" name="HinhAnhFile" accept="image/*" hidden>
+
+                            <!-- Nội dung hiển thị ban đầu -->
+                            <div id="uploadText">
+                                <i class="bi bi-cloud-arrow-up-fill fs-1 text-warning"></i>
+                                <p class="mt-3 mb-1 fw-semibold">Nhấn để chọn ảnh từ máy tính</p>
+                                <small class="text-muted">Hỗ trợ JPG, PNG, WEBP</small>
+                            </div>
+
+                            <!-- 
+                                Ảnh preview sau khi chọn file
+                                - d-none: mặc định ẩn
+                                - src sẽ được JS gán sau
+                            -->
+                            <img 
+                                id="previewImage" 
+                                class="img-fluid mt-3 d-none" 
+                                style="max-height: 220px; border-radius: 14px; object-fit: cover;">
+                        </div>
+                    </div>
+
+                    <!-- Mô tả -->
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Mô tả</label>
+                        <textarea 
+                            name="MoTa" 
+                            rows="5" 
+                            class="form-control" 
+                            placeholder="Nhập mô tả chi tiết về xe..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Nhóm nút submit / hủy -->
+                <div class="d-flex gap-2 mt-4 flex-wrap">
+
+                    <!-- Nút submit -->
+                    <button type="submit" class="btn btn-warning px-4 btn-submit">
+                        <i class="bi bi-cloud-upload-fill me-2"></i>Thêm xe
+                    </button>
+
+                    <!-- Nút hủy quay lại -->
+                    <a href="/xe/quanly" class="btn btn-outline-secondary px-4">
+                        <i class="bi bi-x-circle me-2"></i>Hủy
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Nhúng footer dùng chung -->
+<%- include('partials/footer') %>
+
+<!-- Nhúng file js dùng chung (bootstrap, validation, jquery nếu có...) -->
+<%- include('partials/javascript') %>
+
+<script>
+    // Lấy các phần tử cần thao tác
+    const fileInput = document.getElementById('HinhAnhFile');   // input chọn file
+    const previewImage = document.getElementById('previewImage'); // ảnh xem trước
+    const uploadText = document.getElementById('uploadText');   // phần chữ hướng dẫn upload
+
+    // Nếu tồn tại input file thì mới gắn sự kiện
+    if (fileInput) {
+
+        // Lắng nghe khi người dùng chọn ảnh
+        fileInput.addEventListener('change', function () {
+
+            // Lấy file đầu tiên người dùng chọn
+            const file = this.files[0];
+
+            // Nếu có file
+            if (file) {
+
+                // FileReader dùng để đọc file ảnh từ máy người dùng
+                const reader = new FileReader();
+
+                // Khi đọc xong file
+                reader.onload = function (e) {
+
+                    // Gán dữ liệu ảnh vào thẻ img để hiển thị preview
+                    previewImage.src = e.target.result;
+
+                    // Hiện ảnh preview
+                    previewImage.classList.remove('d-none');
+
+                    // Ẩn phần text upload đi
+                    uploadText.classList.add('d-none');
+                };
+
+                // Đọc file dưới dạng Data URL (chuỗi base64)
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+</script>
+</body>
+</html>

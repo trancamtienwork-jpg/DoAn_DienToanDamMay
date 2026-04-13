@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <%- include('partials/head') %>
+</head>
+<body>
+    <%- include('partials/navbar') %>
+
+    <main class="page-shell">
+        <div class="container" style="max-width: 980px;">
+            <div class="page-hero-mini mb-4">
+                <span class="page-kicker">ĐẶT CỌC</span>
+                <h1 class="page-title">Phiếu đặt cọc xe</h1>
+                <p class="page-desc mb-0">Vui lòng nhập thông tin để giữ xe trước.</p>
+            </div>
+
+            <%- message %>
+
+            <div class="glass-card p-4 p-lg-5">
+                <form action="/datcoc/tao/<%= xe._id %>" method="post" class="needs-validation" novalidate>
+                    <div class="row g-4">
+
+                        <!-- Xe -->
+                        <div class="col-12">
+                            <label class="form-label">Xe đặt cọc</label>
+                            <input type="text" class="form-control" 
+                                   value="<%= xe.TenXe %> <% if(xe.DongXe){ %> - <%= xe.DongXe.TenDongXe %> <% } %>" 
+                                   readonly>
+                        </div>
+
+                        <!-- Họ tên -->
+                        <div class="col-md-6">
+                            <label class="form-label">Họ và tên</label>
+                            <input type="text" name="HoVaTen" class="form-control" placeholder="Nhập họ tên" required>
+                        </div>
+
+                        <!-- SĐT -->
+                        <div class="col-md-6">
+                            <label class="form-label">Số điện thoại</label>
+                            <input type="text" name="SoDienThoai" class="form-control" placeholder="Nhập số điện thoại" required>
+                        </div>
+
+                        <!-- CCCD -->
+                        <div class="col-md-6">
+                            <label class="form-label">CCCD / CMND</label>
+                            <input type="text" name="CCCD" class="form-control" placeholder="Nhập CCCD">
+                        </div>
+
+                        <!-- Địa chỉ -->
+                        <div class="col-md-6">
+                            <label class="form-label">Địa chỉ</label>
+                            <input type="text" name="DiaChi" class="form-control" placeholder="Nhập địa chỉ">
+                        </div>
+
+                        <!-- Số tiền -->
+                        <div class="col-md-6">
+                            <label class="form-label">Số tiền đặt cọc</label>
+                            <input type="number" name="SoTienCoc" class="form-control" placeholder="Ví dụ: 50000000" required>
+                        </div>
+
+                        <!-- Ghi chú -->
+                        <div class="col-12">
+                            <label class="form-label">Ghi chú</label>
+                            <textarea name="GhiChu" class="form-control" rows="4" placeholder="Ví dụ: Liên hệ sau 18h, muốn giữ xe màu đen..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-3 mt-4">
+                        <button type="submit" class="btn btn-warning btn-premium">
+                            <i class="bi bi-send-fill me-2"></i>Gửi phiếu đặt cọc
+                        </button>
+
+                        <a href="/xe/chi-tiet/<%= xe._id %>" class="btn btn-outline-light">
+                            <i class="bi bi-arrow-left me-2"></i>Quay lại
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <%- include('partials/footer') %>
+    <%- include('partials/javascript') %>
+</body>
+</html>

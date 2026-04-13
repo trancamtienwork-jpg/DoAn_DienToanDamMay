@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <%- include('partials/head') %>
+</head>
+<body>
+<%- include('partials/navbar') %>
+
+<div class="container mt-5 pt-5">
+    <% if (typeof message !== 'undefined' && message) { %>
+        <%- message %>
+    <% } %>
+
+    <div class="card shadow-lg border-0 form-card">
+        <div class="card-header form-header d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-pencil-square me-2"></i>Cập nhật bài viết</span>
+            <a href="/baiviet" class="btn btn-outline-light btn-sm">
+                <i class="bi bi-arrow-left me-1"></i>Quay lại
+            </a>
+        </div>
+
+        <div class="card-body p-4">
+            <form action="/baiviet/sua/<%= baiviet._id %>" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                <div class="row g-4">
+
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Tiêu đề bài viết</label>
+                        <input type="text" name="TieuDe" class="form-control" value="<%= baiviet.TieuDe %>" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold">Bài viết nổi bật?</label>
+                        <select name="NoiBat" class="form-select">
+                            <option value="0" <%= baiviet.NoiBat == 0 ? 'selected' : '' %>>Không</option>
+                            <option value="1" <%= baiviet.NoiBat == 1 ? 'selected' : '' %>>Có</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Hình ảnh bài viết</label>
+
+                        <div class="upload-box text-center p-4 upload-pro" onclick="document.getElementById('HinhAnhFile').click()">
+                            <input type="file" id="HinhAnhFile" name="HinhAnhFile" accept="image/*" hidden>
+
+                            <% if (baiviet.HinhAnh) { %>
+                                <img id="previewImage" src="<%= baiviet.HinhAnh %>" class="img-fluid mt-2" style="max-height: 220px; border-radius: 14px; object-fit: cover;">
+                                <div id="uploadText" class="mt-3">
+                                    <p class="mb-1 fw-semibold">Nhấn để đổi ảnh khác</p>
+                                    <small class="text-muted">Hỗ trợ JPG, PNG, WEBP</small>
+                                </div>
+                            <% } else { %>
+                                <div id="uploadText">
+                                    <i class="bi bi-cloud-arrow-up-fill fs-1 text-warning"></i>
+                                    <p class="mt-3 mb-1 fw-semibold">Nhấn để chọn ảnh từ máy tính</p>
+                                    <small class="text-muted">Hỗ trợ JPG, PNG, WEBP</small>
+                                </div>
+                                <img id="previewImage" class="img-fluid mt-3 d-none" style="max-height: 220px; border-radius: 14px; object-fit: cover;">
+                            <% } %>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Tóm tắt bài viết</label>
+                        <textarea name="TomTat" rows="4" class="form-control" required><%= baiviet.TomTat %></textarea>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Nội dung bài viết</label>
+                        <textarea name="NoiDung" rows="8" class="form-control" required><%= baiviet.NoiDung %></textarea>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 mt-4 flex-wrap">
+                    <button type="submit" class="btn btn-warning px-4 btn-submit">
+                        <i class="bi bi-save-fill me-2"></i>Lưu cập nhật
+                    </button>
+                    <a href="/baiviet" class="btn btn-outline-secondary px-4">
+                        <i class="bi bi-x-circle me-2"></i>Hủy
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
+<%- include('partials/javascript') %>
+
+<script>
+    const fileInput = document.getElementById('HinhAnhFile');
+    const previewImage = document.getElementById('previewImage');
+    const uploadText = document.getElementById('uploadText');
+
+    fileInput.addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                previewImage.src = e.target.result;
+                previewImage.classList.remove('d-none');
+
+                if (uploadText) {
+                    uploadText.innerHTML = `
+                        <p class="mt-3 mb-1 fw-semibold">Nhấn để đổi ảnh khác</p>
+                        <small class="text-muted">Hỗ trợ JPG, PNG, WEBP</small>
+                    `;
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
+</body>
+</html>

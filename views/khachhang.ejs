@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <%- include('partials/head') %>
+</head>
+
+<body>
+<%- include('partials/navbar') %>
+
+<main class="page-shell">
+    <div class="container">
+
+        <!-- HEADER -->
+        <div class="page-hero-mini mb-4">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                
+                <div>
+                    <span class="page-kicker">QUẢN LÝ</span>
+                    <h1 class="page-title">Khách hàng</h1>
+                    <p class="page-desc mb-0">
+                        Danh sách khách hàng đã mua xe tại showroom.
+                    </p>
+                </div>
+
+                <div class="d-flex flex-wrap gap-3">
+                    <div class="mini-stat-box">
+                        <span class="mini-stat-label">Tổng khách</span>
+                        <strong><%= khachhang.length %></strong>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- PANEL -->
+        <div class="premium-panel">
+
+            <!-- HEADER TABLE -->
+            <div class="premium-panel-header">
+                <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                    
+                    <div>
+                        <h4 class="mb-1 fw-bold">Danh sách khách hàng</h4>
+                        <span class="table-meta-chip">
+                            <i class="bi bi-people me-2"></i>Customer Management
+                        </span>
+                    </div>
+
+                    <!-- SEARCH -->
+                    <form method="get" action="/khachhang" class="w-100" style="max-width: 420px;">
+                        <div class="search-box-dongxe">
+                            <i class="bi bi-search search-icon"></i>
+                            <input type="text" class="form-control form-control-premium"
+                                   name="tukhoa"
+                                   id="searchInput"
+                                   placeholder="Tìm khách hàng..."
+                                   value="<%= tukhoa || '' %>" />
+                            <button type="button" class="btn-clear-search" id="clearSearchBtn">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+
+                <% if (tukhoa) { %>
+                    <div class="mt-3 search-result-text">
+                        Kết quả tìm kiếm cho: <strong><%= tukhoa %></strong>
+                    </div>
+                <% } %>
+            </div>
+
+            <!-- TABLE -->
+            <div class="table-responsive premium-table-wrap">
+                <table class="table premium-table align-middle mb-0">
+                    
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Họ tên</th>
+                            <th>SĐT</th>
+                            <th>Tổng chi tiêu</th>
+                            <th>Số lần mua</th>
+                            <th>Sửa</th>
+                            <th>Xóa</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <% if (khachhang.length > 0) { %>
+
+                            <% khachhang.forEach((k, index) => { %>
+                                <tr>
+
+                                    <td>
+                                        <span class="index-badge">
+                                            <%= index + 1 %>
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <div class="fw-semibold text-white">
+                                            <a href="/khachhang/<%= k._id %>" class="text-warning">
+                                                <%= k.HoVaTen %>
+                                            </a>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <span class="text-secondary">
+                                            <%= k.SoDienThoai %>
+                                        </span>
+                                    </td>
+
+                                    <td class="price-text">
+                                        <%= Number(k.TongChiTieu || 0).toLocaleString('vi-VN') %> đ
+                                    </td>
+
+                                    <td>
+                                        <span class="quantity-badge">
+                                            <%= k.SoLanMua || 0 %>
+                                        </span>
+                                    </td>
+
+                                    <!-- SỬA -->
+                                    <td>
+                                        <a href="/khachhang/sua/<%= k._id %>" class="btn btn-action-edit">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                    </td>
+
+                                    <!-- XÓA -->
+                                    <td>
+                                        <a href="/khachhang/xoa/<%= k._id %>"
+                                           class="btn btn-action-delete"
+                                           onclick="return confirm('Bạn có chắc muốn xóa khách <%= k.HoVaTen %> không?')">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </td>
+
+                                </tr>
+                            <% }) %>
+
+                        <% } else { %>
+
+                            <tr>
+                                <td colspan="7" class="text-center py-5 text-secondary">
+                                    <i class="bi bi-inbox fs-2 d-block mb-2"></i>
+                                    Chưa có khách hàng nào.
+                                </td>
+                            </tr>
+
+                        <% } %>
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+</main>
+
+<%- include('partials/footer') %>
+<%- include('partials/javascript') %>
+
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const clearSearchBtn = document.getElementById('clearSearchBtn');
+
+    function toggleClearButton() {
+        clearSearchBtn.style.display = searchInput.value.trim() ? 'flex' : 'none';
+    }
+
+    searchInput.addEventListener('input', toggleClearButton);
+
+    clearSearchBtn.addEventListener('click', function () {
+        searchInput.value = '';
+        toggleClearButton();
+        window.location.href = '/khachhang';
+    });
+
+    toggleClearButton();
+</script>
+
+</body>
+</html>

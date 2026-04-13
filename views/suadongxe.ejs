@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head><%- include('partials/head') %></head>
+<body>
+<%- include('partials/navbar') %>
+
+<div class="container page-shell">
+    <div class="card shadow-lg">
+        <div class="card-header"><i class="bi bi-pencil-square me-2"></i>Cập nhật dòng xe</div>
+        <div class="card-body">
+            <form action="/dongxe/sua/<%= dongxe._id %>" method="post" class="needs-validation" novalidate>
+                <div class="mb-3">
+                    <label class="form-label">Tên dòng xe</label>
+                    <input type="text" name="TenDongXe" class="form-control" value="<%= dongxe.TenDongXe %>" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Mô tả</label>
+                    <textarea name="MoTa" rows="4" class="form-control"><%= dongxe.MoTa %></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-warning">
+                    <i class="bi bi-save-fill me-2"></i>Lưu cập nhật
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
+<%- include('partials/javascript') %>
+</body>
+</html>

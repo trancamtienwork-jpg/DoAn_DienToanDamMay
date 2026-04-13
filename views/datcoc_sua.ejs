@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <%- include('partials/head') %>
+</head>
+<body>
+    <%- include('partials/navbar') %>
+
+    <main class="page-shell">
+        <div class="container" style="max-width: 980px;">
+            <div class="page-hero-mini mb-4">
+                <span class="page-kicker">CHỈNH SỬA</span>
+                <h1 class="page-title">Cập nhật đặt cọc</h1>
+                <p class="page-desc mb-0">Chỉnh sửa thông tin phiếu đặt cọc.</p>
+            </div>
+
+            <%- message %>
+
+            <div class="glass-card p-4 p-lg-5">
+                <form action="/datcoc/sua/<%= datcoc._id %>" method="post" class="needs-validation" novalidate>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label">Khách hàng</label>
+                            <select name="KhachHang" class="form-select" required>
+                                <option value="">-- Chọn khách hàng --</option>
+                                <% taikhoan.forEach(tk => { %>
+                                    <option value="<%= tk._id %>" <%= String(datcoc.KhachHang) === String(tk._id) ? 'selected' : '' %>>
+                                        <%= tk.HoVaTen %> - <%= tk.TenDangNhap %>
+                                    </option>
+                                <% }) %>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Xe</label>
+                            <select name="Xe" class="form-select" required>
+                                <option value="">-- Chọn xe --</option>
+                                <% xe.forEach(x => { %>
+                                    <option value="<%= x._id %>" <%= String(datcoc.Xe) === String(x._id) ? 'selected' : '' %>>
+                                        <%= x.TenXe %> <% if(x.DongXe){ %> - <%= x.DongXe.TenDongXe %> <% } %>
+                                    </option>
+                                <% }) %>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Số tiền cọc</label>
+                            <input type="number" name="SoTienCoc" class="form-control" value="<%= datcoc.SoTienCoc %>" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Ngày đặt</label>
+                            <input type="date" name="NgayDat" class="form-control"
+                                   value="<%= datcoc.NgayDat ? new Date(datcoc.NgayDat).toISOString().split('T')[0] : '' %>">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Trạng thái</label>
+                            <select name="TrangThai" class="form-select">
+                                <option value="ChoXuLy" <%= datcoc.TrangThai === 'ChoXuLy' ? 'selected' : '' %>>Chờ xử lý</option>
+                                <option value="DaXacNhan" <%= datcoc.TrangThai === 'DaXacNhan' ? 'selected' : '' %>>Đã xác nhận</option>
+                                <option value="DaHuy" <%= datcoc.TrangThai === 'DaHuy' ? 'selected' : '' %>>Đã hủy</option>
+                            </select>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">Ghi chú</label>
+                            <textarea name="GhiChu" class="form-control" rows="4"><%= datcoc.GhiChu || '' %></textarea>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-3 mt-4">
+                        <button type="submit" class="btn btn-warning btn-premium">
+                            <i class="bi bi-save me-2"></i>Cập nhật
+                        </button>
+                        <a href="/datcoc" class="btn btn-outline-light">
+                            <i class="bi bi-arrow-left me-2"></i>Quay lại
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <%- include('partials/footer') %>
+    <%- include('partials/javascript') %>
+</body>
+</html>

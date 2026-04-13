@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <%- include('partials/head') %>
+</head>
+
+<body>
+    <%- include('partials/navbar') %>
+
+    <main class="page-shell">
+        <div class="container">
+
+            <!-- HEADER GIỐNG THANH TOÁN -->
+            <div class="page-hero-mini mb-4">
+                <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                    
+                    <div>
+                        <span class="page-kicker">QUẢN TRỊ</span>
+                        <h1 class="page-title">Dashboard</h1>
+                        <p class="page-desc mb-0">
+                            Tổng quan hệ thống showroom xe.
+                        </p>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-3">
+
+                        <div class="mini-stat-box">
+                            <span class="mini-stat-label">Tổng xe</span>
+                            <strong><%= tongXe %></strong>
+                        </div>
+
+                        <div class="mini-stat-box">
+                            <span class="mini-stat-label">Khách hàng</span>
+                            <strong><%= tongKhach %></strong>
+                        </div>
+
+                        <div class="mini-stat-box">
+                            <span class="mini-stat-label">Đặt cọc</span>
+                            <strong><%= tongDatCoc %></strong>
+                        </div>
+
+                        <div class="mini-stat-box">
+                            <span class="mini-stat-label">Thanh toán</span>
+                            <strong><%= tongThanhToan %></strong>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL CHÍNH -->
+            <div class="premium-panel">
+
+                <!-- HEADER PANEL -->
+                <div class="premium-panel-header">
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+                            <h4 class="mb-1 fw-bold">Tổng quan doanh thu</h4>
+                            <span class="table-meta-chip">
+                                <i class="bi bi-speedometer2 me-2"></i>Dashboard hệ thống
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- CONTENT -->
+                <div class="p-4">
+
+                    <div class="row g-4">
+
+                        <!-- DOANH THU -->
+                        <div class="col-md-6">
+                            <div class="card stat-card h-100">
+                                <div class="stat-icon">
+                                    <i class="bi bi-cash-stack"></i>
+                                </div>
+                                <h3>Doanh thu</h3>
+                                <h2 class="text-warning fw-bold">
+                                    <%= tongDoanhThu.toLocaleString('vi-VN') %> đ
+                                </h2>
+                                <p>Tổng số tiền đã thanh toán</p>
+                            </div>
+                        </div>
+
+                        <!-- GIAO DỊCH -->
+                        <div class="col-md-6">
+                            <div class="card stat-card h-100">
+                                <div class="stat-icon">
+                                    <i class="bi bi-receipt"></i>
+                                </div>
+                                <h3>Giao dịch</h3>
+                                <h2 class="fw-bold">
+                                    <%= tongThanhToan %>
+                                </h2>
+                                <p>Tổng số giao dịch thành công</p>
+                            </div>
+                        </div>
+
+                        <!-- KHÁCH -->
+                        <div class="col-md-6">
+                            <div class="card stat-card h-100">
+                                <div class="stat-icon">
+                                    <i class="bi bi-people"></i>
+                                </div>
+                                <h3>Khách hàng</h3>
+                                <h2 class="fw-bold">
+                                    <%= tongKhach %>
+                                </h2>
+                                <p>Số lượng khách hàng</p>
+                            </div>
+                        </div>
+
+                        <!-- XE -->
+                        <div class="col-md-6">
+                            <div class="card stat-card h-100">
+                                <div class="stat-icon">
+                                    <i class="bi bi-car-front"></i>
+                                </div>
+                                <h3>Xe</h3>
+                                <h2 class="fw-bold">
+                                    <%= tongXe %>
+                                </h2>
+                                <p>Tổng số xe trong hệ thống</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <%- include('partials/footer') %>
+    <%- include('partials/javascript') %>
+</body>
+
+</html>

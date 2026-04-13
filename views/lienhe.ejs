@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <%- include('partials/head') %>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+
+<%- include('partials/navbar') %>
+
+<div class="container page-shell">
+
+    <!-- HERO MINI -->
+    <section class="page-hero-mini mb-4">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-4">
+            <div>
+                <span class="page-kicker">TCT AUTO SHOWROOM</span>
+                <h1 class="page-title mb-2">Liên hệ</h1>
+                <p class="page-desc mb-0">
+                    Gửi thông tin để được tư vấn nhanh chóng về các mẫu xe bạn quan tâm.
+                </p>
+            </div>
+
+            <div class="table-meta-chip">
+                <i class="bi bi-telephone me-2"></i>Support 24/7
+            </div>
+        </div>
+    </section>
+
+    <!-- FORM -->
+    <section class="premium-panel p-4 p-lg-5">
+        <div class="row g-4">
+
+            <!-- FORM LEFT -->
+            <div class="col-lg-7">
+                <form action="/lienhe/gui" method="POST">
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary">Họ tên</label>
+                            <input name="HoTen" class="form-control" placeholder="Nhập họ tên" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary">Email</label>
+                            <input name="Email" type="email" class="form-control" placeholder="example@gmail.com" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary">Số điện thoại</label>
+                            <input name="SoDienThoai" class="form-control" placeholder="090xxxxxxx">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label text-secondary">Quan tâm xe</label>
+                            <input name="XeQuanTam" class="form-control" placeholder="VD: Taycan GTS">
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label text-secondary">Nội dung</label>
+                            <textarea name="NoiDung" class="form-control" rows="5" placeholder="Nhập nội dung..." required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 d-flex gap-3">
+                        <button class="btn btn-warning px-4">
+                            <i class="bi bi-send me-2"></i>Gửi liên hệ
+                        </button>
+
+                        <a href="/xe" class="btn btn-outline-light">
+                            <i class="bi bi-arrow-left me-2"></i>Quay lại
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- INFO RIGHT -->
+            <div class="col-lg-5">
+                <div class="glass-card p-4 h-100">
+                    <h5 class="fw-bold mb-3">
+                        <i class="bi bi-building me-2 text-warning"></i>Thông tin showroom
+                    </h5>
+
+                    <p class="mb-2">
+                        <i class="bi bi-geo-alt me-2 text-warning"></i>
+                        An Giang, Việt Nam
+                    </p>
+
+                    <p class="mb-2">
+                        <i class="bi bi-telephone me-2 text-warning"></i>
+                        0123 456 789
+                    </p>
+
+                    <p class="mb-4">
+                        <i class="bi bi-envelope me-2 text-warning"></i>
+                        contact@tctauto.vn
+                    </p>
+
+                    <div class="glass-card p-3 text-center">
+                        <i class="bi bi-car-front fs-2 text-warning d-block mb-2"></i>
+                        <small class="text-secondary">
+                            Chúng tôi sẽ phản hồi trong vòng 24h
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</div>
+
+<div class="premium-panel p-4 mt-4">
+    <h5>Vị trí showroom</h5>
+    <div id="map" style="height:400px; border-radius:12px;"></div>
+</div>
+
+<%- include('partials/footer') %>
+<%- include('partials/javascript') %>
+
+</body>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+    const map = L.map('map').setView([10.0452, 105.7469], 15);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+
+    L.marker([10.0452, 105.7469]).addTo(map)
+        .bindPopup("<b>TCT Auto</b><br>TCT AUTO")
+        .openPopup();
+</script>
+</html>

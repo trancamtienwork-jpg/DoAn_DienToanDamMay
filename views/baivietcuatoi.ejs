@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <%- include('partials/head') %>
+</head>
+<body>
+<%- include('partials/navbar') %>
+
+<div class="container page-shell xe-page">
+    <% if (typeof message !== 'undefined' && message) { %>
+        <div class="mb-4 mt-3">
+            <%- message %>
+        </div>
+    <% } %>
+
+    <section class="page-hero-mini mb-4">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-4">
+            <div>
+                <span class="page-kicker">MY ARTICLES</span>
+                <h1 class="page-title mb-2">Bài viết của tôi</h1>
+                <p class="page-desc mb-0">Quản lý các bài viết do bạn đăng lên hệ thống.</p>
+            </div>
+
+            <div class="d-flex gap-3 flex-wrap">
+                <div class="mini-stat-box">
+                    <span class="mini-stat-label"><i class="bi bi-person-lines-fill me-1"></i>Tổng bài</span>
+                    <strong><%= baiviet.length %></strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="premium-panel">
+        <div class="premium-panel-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div>
+                <h4 class="fw-bold mb-1">
+                    <i class="bi bi-journal-text text-warning me-2"></i>Danh sách bài viết của bạn
+                </h4>
+                <p class="page-desc mb-0">Bạn có thể chỉnh sửa hoặc xóa bài chưa duyệt.</p>
+            </div>
+
+            <a href="/baiviet/them" class="btn btn-warning">
+                <i class="bi bi-plus-circle me-2"></i>Đăng bài viết
+            </a>
+        </div>
+
+        <% if (baiviet && baiviet.length > 0) { %>
+            <div class="table-responsive premium-table-wrap">
+                <table class="table premium-table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Ảnh</th>
+                            <th>Tiêu đề</th>
+                            <th>Lượt xem</th>
+                            <th>Ngày đăng</th>
+                            <th>Duyệt</th>
+                            <th>Sửa</th>
+                            <th>Xóa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% let stt = 1; %>
+                        <% baiviet.forEach((bv) => { %>
+                            <tr>
+                                <td><span class="index-badge"><%= stt++ %></span></td>
+
+                                <td>
+                                    <% if (bv.HinhAnh) { %>
+                                        <img src="<%= bv.HinhAnh %>" class="table-car-image" alt="<%= bv.TieuDe %>">
+                                    <% } else { %>
+                                        <div class="no-image-box">Không ảnh</div>
+                                    <% } %>
+                                </td>
+
+                                <td class="text-start">
+                                    <div class="fw-bold"><%= bv.TieuDe %></div>
+                                    <small class="text-secondary"><%= bv.TomTat ? bv.TomTat.substring(0, 60) : 'Không có tóm tắt' %>...</small>
+                                </td>
+
+                                <td><span class="price-text"><%= bv.LuotXem || 0 %></span></td>
+                                <td><%= new Date(bv.NgayDang).toLocaleDateString('vi-VN') %></td>
+
+                                <td>
+                                    <% if (bv.KiemDuyet == 1) { %>
+                                        <span class="btn btn-sm btn-outline-success">Đã duyệt</span>
+                                    <% } else { %>
+                                        <span class="btn btn-sm btn-outline-danger">Chờ duyệt</span>
+                                    <% } %>
+                                </td>
+
+                                <% if (bv.KiemDuyet == 1) { %>
+                                    <td><span class="btn-action-edit opacity-50"><i class="bi bi-lock"></i></span></td>
+                                    <td><span class="btn-action-delete opacity-50"><i class="bi bi-lock"></i></span></td>
+                                <% } else { %>
+                                    <td>
+                                        <a href="/baiviet/sua/<%= bv._id %>" class="btn-action-edit">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                    </td>
+
+                                    <td>
+                                        <a href="/baiviet/xoa/<%= bv._id %>" class="btn-action-delete"
+                                           onclick="return confirm('Bạn có muốn xóa bài viết <%= bv.TieuDe %> không?');">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </td>
+                                <% } %>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        <% } else { %>
+            <div class="p-5 text-center">
+                <i class="bi bi-file-earmark-plus fs-1 text-warning d-block mb-3"></i>
+                <h5 class="fw-bold">Bạn chưa có bài viết nào</h5>
+                <p class="section-subtitle mb-0">Hãy bắt đầu đăng bài viết đầu tiên của bạn.</p>
+            </div>
+        <% } %>
+    </section>
+</div>
+
+<%- include('partials/footer') %>
+<%- include('partials/javascript') %>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <%- include('partials/head') %>
+</head>
+<body>
+<%- include('partials/navbar') %>
+
+<!-- HERO XE -->
+<section class="container page-shell">
+    <div class="premium-panel overflow-hidden p-0 mb-4">
+
+        <div style="position:relative;">
+            <img src="<%= xe.HinhAnh || 'https://via.placeholder.com/1400x600?text=Car' %>" 
+                 style="width:100%; height:420px; object-fit:cover; filter:brightness(0.75);">
+
+            <div style="position:absolute; bottom:30px; left:40px;">
+                <% if (xe.NoiBat == 1) { %>
+                    <span class="badge-premium mb-2 d-inline-block">Xe nổi bật</span>
+                <% } %>
+
+                <h1 class="fw-bold text-white mb-2" style="font-size:2.8rem;">
+                    <%= xe.TenXe %>
+                </h1>
+
+                <div class="text-warning fw-bold fs-3">
+                    <%= xe.Gia ? Number(xe.Gia).toLocaleString('vi-VN') : 'Liên hệ' %> VNĐ
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- NỘI DUNG -->
+<div class="container">
+    <div class="row g-4">
+
+        <div class="col-lg-8">
+            <div class="premium-panel p-4 p-lg-5">
+
+                <!-- META -->
+                <div class="d-flex flex-wrap gap-4 mb-4 text-secondary">
+                    <span><i class="bi bi-car-front me-2"></i>
+                        <%= xe.DongXe ? xe.DongXe.TenDongXe : 'Chưa cập nhật' %>
+                    </span>
+                    <span><i class="bi bi-calendar me-2"></i>
+                        <%= xe.NamSanXuat || '---' %>
+                    </span>
+                    <span><i class="bi bi-box me-2"></i>
+                        <%= xe.SoLuong || 0 %> xe
+                    </span>
+                </div>
+
+                <!-- MÔ TẢ -->
+                <div class="glass-card p-4 mb-4">
+                    <h5 class="fw-bold text-warning mb-3">
+                        <i class="bi bi-file-text me-2"></i>Mô tả
+                    </h5>
+                    <p class="mb-0">
+                        <%= xe.MoTa || 'Dòng xe cao cấp mang phong cách thể thao, mạnh mẽ và hiện đại.' %>
+                    </p>
+                </div>
+
+                <!-- THÔNG SỐ -->
+                <div class="glass-card p-4 mb-4">
+                    <h5 class="fw-bold text-warning mb-3">
+                        <i class="bi bi-speedometer2 me-2"></i>Thông số kỹ thuật
+                    </h5>
+
+                    <div class="row g-3">
+
+                        <div class="col-md-4">
+                            <div class="p-3 text-center rounded-4 border border-light-subtle h-100">
+                                <div class="text-secondary small">Động cơ</div>
+                                <div class="fw-bold"><%= xe.DongCo || '---' %></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="p-3 text-center rounded-4 border border-light-subtle h-100">
+                                <div class="text-secondary small">Công suất</div>
+                                <div class="fw-bold"><%= xe.CongSuat || '---' %></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="p-3 text-center rounded-4 border border-light-subtle h-100">
+                                <div class="text-secondary small">Tốc độ tối đa</div>
+                                <div class="fw-bold"><%= xe.TocDoToiDa || '---' %></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="p-3 text-center rounded-4 border border-light-subtle h-100">
+                                <div class="text-secondary small">Màu sắc</div>
+                                <div class="fw-bold"><%= xe.MauSac || '---' %></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="p-3 text-center rounded-4 border border-light-subtle h-100">
+                                <div class="text-secondary small">Năm</div>
+                                <div class="fw-bold"><%= xe.NamSanXuat || '---' %></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="p-3 text-center rounded-4 border border-light-subtle h-100">
+                                <div class="text-secondary small">Trạng thái</div>
+                                <div class="fw-bold">
+                                    <%= xe.NoiBat == 1 ? 'Nổi bật' : 'Thường' %>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ACTION -->
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="/datcoc/tao/<%= xe._id %>" class="btn btn-warning btn-premium">
+                        <i class="bi bi-cash-coin me-2"></i>Đặt cọc
+                    </a>
+
+                    <a href="/" class="btn btn-outline-light btn-premium">
+                        <i class="bi bi-arrow-left me-2"></i>Quay lại
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="col-lg-4">
+
+            <!-- LIÊN HỆ -->
+            <div class="premium-panel p-4 text-center mb-4">
+                <!-- <h4 class="fw-bold mb-3">Liên hệ tư vấn</h4>
+
+                <p class="text-secondary">
+                    Nhận tư vấn chi tiết về dòng xe này từ showroom
+                </p>
+
+                <a href="#" class="btn btn-warning w-100 mb-3">
+                    <i class="bi bi-telephone me-2"></i>Gọi ngay
+                </a>
+
+                <a href="#" class="btn btn-outline-light w-100">
+                    <i class="bi bi-chat-dots me-2"></i>Chat tư vấn
+                </a> -->
+                <a href="tel:0123456789" class="btn btn-warning w-100 mb-3 py-3 fw-semibold">
+                    <i class="bi bi-telephone me-2"></i>Gọi ngay
+                </a>
+
+                <a href="https://zalo.me/0123456789" target="_blank" class="btn btn-outline-light w-100 py-3 fw-semibold">
+                    <i class="bi bi-chat-dots me-2"></i>Chat tư vấn
+                </a>
+            </div>
+
+            <!-- XE CÙNG DÒNG -->
+            <div class="premium-panel p-4">
+                <h4 class="fw-bold mb-4">
+                    <i class="bi bi-car-front-fill text-warning me-2"></i>Xe cùng dòng
+                </h4>
+
+                <% if (xecungdong && xecungdong.length > 0) { %>
+                    <div class="d-flex flex-column gap-3">
+                        <% xecungdong.forEach(item => { %>
+                            <a href="/xe/chi-tiet/<%= item._id %>" class="text-white">
+                                <div class="glass-card p-3 d-flex gap-3 align-items-center">
+                                    <img src="<%= item.HinhAnh || 'https://via.placeholder.com/120x90?text=Car' %>"
+                                         style="width: 100px; height: 70px; object-fit: cover; border-radius: 12px;">
+                                    <div class="flex-grow-1">
+                                        <div class="fw-bold mb-1"><%= item.TenXe %></div>
+                                        <small class="text-secondary d-block mb-1">
+                                            <%= item.NamSanXuat || '---' %>
+                                        </small>
+                                        <small class="text-warning fw-semibold">
+                                            <%= item.Gia ? Number(item.Gia).toLocaleString('vi-VN') : 'Liên hệ' %> VNĐ
+                                        </small>
+                                    </div>
+                                </div>
+                            </a>
+                        <% }) %>
+                    </div>
+                <% } else { %>
+                    <p class="text-secondary mb-0">Không có xe cùng dòng.</p>
+                <% } %>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<%- include('partials/footer') %>
+<%- include('partials/javascript') %>
+</body>
+</html>

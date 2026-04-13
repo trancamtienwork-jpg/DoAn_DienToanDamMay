@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <%- include('partials/head') %>
+</head>
+<body>
+<%- include('partials/navbar') %>
+
+<div class="container page-shell">
+    <% if (typeof message !== 'undefined' && message) { %>
+        <div class="mb-4 mt-3">
+            <%- message %>
+        </div>
+    <% } %>
+
+    <!-- HERO -->
+    <section class="page-hero-mini mb-4">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-4">
+            <div>
+                <span class="page-kicker">AUTO BLOG</span>
+                <h1 class="page-title mb-2">Danh sách bài viết</h1>
+                <p class="page-desc mb-0">
+                    Cập nhật tin tức, đánh giá và các nội dung nổi bật mới nhất.
+                </p>
+            </div>
+
+            <div class="d-flex gap-3 flex-wrap">
+                <div class="mini-stat-box">
+                    <span class="mini-stat-label">
+                        <i class="bi bi-file-earmark-text me-1"></i>Tổng bài viết
+                    </span>
+                    <strong><%= baiviet.length %></strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEARCH -->
+    <section class="premium-panel p-4 mb-4">
+        <form method="GET" action="/baiviet" class="row g-3 align-items-end">
+            <div class="col-md-8">
+                <label class="form-label fw-semibold">Tìm tiêu đề bài viết</label>
+                <input 
+                    type="text" 
+                    name="tukhoa" 
+                    class="form-control" 
+                    value="<%= tuKhoa || '' %>" 
+                    placeholder="Nhập tiêu đề bài viết..."
+                >
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label fw-semibold">Nổi bật</label>
+                <select name="noibat" class="form-select">
+                    <option value="">Tất cả</option>
+                    <option value="1" <%= boLocNoiBat == '1' ? 'selected' : '' %>>Chỉ nổi bật</option>
+                </select>
+            </div>
+
+            <div class="col-md-2 d-grid">
+                <button class="btn btn-warning">
+                    <i class="bi bi-search me-2"></i>Tìm
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <!-- DANH SÁCH CARD -->
+    <section class="premium-panel p-4 p-lg-5">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+            <div>
+                <h4 class="fw-bold mb-1">
+                    <i class="bi bi-newspaper text-warning me-2"></i>Bài viết mới nhất
+                </h4>
+                <p class="page-desc mb-0">Những bài viết đang được quan tâm trên hệ thống.</p>
+            </div>
+
+            <div class="table-meta-chip">
+                <i class="bi bi-stars me-2"></i>Featured Editorials
+            </div>
+        </div>
+
+        <% if (baiviet && baiviet.length > 0) { %>
+            <div class="row g-4">
+                <% baiviet.forEach((bv) => { %>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card xe-card h-100">
+                            <div class="xe-image-wrap">
+                                <% if (bv.HinhAnh) { %>
+                                    <img src="<%= bv.HinhAnh %>" alt="<%= bv.TieuDe %>">
+                                <% } else { %>
+                                    <img src="https://via.placeholder.com/600x400?text=Bai+Viet" alt="Không có ảnh">
+                                <% } %>
+
+                                <div class="xe-badge">
+                                    <%= bv.NoiBat == 1 ? 'Nổi bật' : 'Bài viết' %>
+                                </div>
+                            </div>
+
+                            <div class="card-body p-4 d-flex flex-column">
+                                <h4 class="fw-bold mb-2"><%= bv.TieuDe %></h4>
+
+                                <p class="text-secondary mb-3">
+                                    <%= bv.TomTat ? bv.TomTat.substring(0, 120) : 'Chưa có tóm tắt.' %>...
+                                </p>
+
+                                <div class="row g-3 mb-4">
+                                    <div class="col-6">
+                                        <div class="glass-card p-3 h-100">
+                                            <small class="d-block text-secondary mb-1">Tác giả</small>
+                                            <strong><%= bv.TacGia ? bv.TacGia.HoVaTen : 'Ẩn danh' %></strong>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="glass-card p-3 h-100">
+                                            <small class="d-block text-secondary mb-1">Lượt xem</small>
+                                            <strong><%= bv.LuotXem || 0 %></strong>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="glass-card p-3 h-100">
+                                            <small class="d-block text-secondary mb-1">Ngày đăng</small>
+                                            <strong><%= new Date(bv.NgayDang).toLocaleDateString('vi-VN') %></strong>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-auto d-flex gap-2 flex-wrap">
+                                    <a href="/baiviet/chi-tiet/<%= bv._id %>" class="btn btn-warning flex-fill">
+                                        <i class="bi bi-eye me-2"></i>Xem chi tiết
+                                    </a>
+
+                                    <a href="/lienhe" class="btn btn-outline-light flex-fill">
+                                        <i class="bi bi-chat-dots me-2"></i>Liên hệ
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <div class="text-center py-5">
+                <div class="glass-card p-5">
+                    <i class="bi bi-file-earmark-text fs-1 text-warning d-block mb-3"></i>
+                    <h5 class="fw-bold mb-2">Chưa có bài viết nào</h5>
+                    <p class="section-subtitle mb-0">Hiện chưa có bài viết nào được duyệt để hiển thị.</p>
+                </div>
+            </div>
+        <% } %>
+    </section>
+</div>
+
+<%- include('partials/footer') %>
+<%- include('partials/javascript') %>
+</body>
+</html>

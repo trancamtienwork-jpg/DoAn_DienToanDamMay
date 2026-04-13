@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <%- include('partials/head') %>
+</head>
+<body>
+    <%- include('partials/navbar') %>
+
+    <main class="page-shell">
+        <div class="container" style="max-width: 980px;">
+            <div class="page-hero-mini mb-4">
+                <span class="page-kicker">CHỈNH SỬA</span>
+                <h1 class="page-title">Cập nhật thanh toán</h1>
+                <p class="page-desc mb-0">Chỉnh sửa thông tin phiếu thanh toán.</p>
+            </div>
+
+            <%- message %>
+
+            <div class="glass-card p-4 p-lg-5">
+                <form action="/thanhtoan/sua/<%= thanhtoan._id %>" method="post" class="needs-validation" novalidate>
+                    <div class="row g-4">
+
+                        <div class="col-md-6">
+                            <label class="form-label">Phiếu đặt cọc</label>
+                            <select name="DatCoc" class="form-select" required>
+                                <option value="">-- Chọn phiếu đặt cọc --</option>
+                                <% datcoc.forEach(dc => { %>
+                                    <option value="<%= dc._id %>" <%= String(thanhtoan.DatCoc) === String(dc._id) ? 'selected' : '' %>>
+                                        <%= dc.MaDatCoc %> - <%= dc.HoVaTen || dc.KhachHang?.HoVaTen || 'Khách hàng' %> - <%= dc.Xe?.TenXe || 'Xe' %>
+                                    </option>
+                                <% }) %>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Số tiền thanh toán</label>
+                            <input type="number" name="SoTien" class="form-control" value="<%= thanhtoan.SoTien %>" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Phương thức</label>
+                            <select name="PhuongThuc" class="form-select">
+                                <option value="TienMat" <%= thanhtoan.PhuongThuc === 'TienMat' ? 'selected' : '' %>>Tiền mặt</option>
+                                <option value="ChuyenKhoan" <%= thanhtoan.PhuongThuc === 'ChuyenKhoan' ? 'selected' : '' %>>Chuyển khoản</option>
+                                <option value="The" <%= thanhtoan.PhuongThuc === 'The' ? 'selected' : '' %>>Thẻ</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Mã giao dịch</label>
+                            <input type="text" name="MaGiaoDich" class="form-control" value="<%= thanhtoan.MaGiaoDich || '' %>">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Ngày thanh toán</label>
+                            <input type="date" name="NgayThanhToan" class="form-control"
+                                   value="<%= thanhtoan.NgayThanhToan ? new Date(thanhtoan.NgayThanhToan).toISOString().split('T')[0] : '' %>">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Trạng thái</label>
+                            <select name="TrangThai" class="form-select">
+                                <option value="ChoThanhToan" <%= thanhtoan.TrangThai === 'ChoThanhToan' ? 'selected' : '' %>>Chờ thanh toán</option>
+                                <option value="DaThanhToan" <%= thanhtoan.TrangThai === 'DaThanhToan' ? 'selected' : '' %>>Đã thanh toán</option>
+                                <option value="ThatBai" <%= thanhtoan.TrangThai === 'ThatBai' ? 'selected' : '' %>>Thất bại</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-3 mt-4">
+                        <button type="submit" class="btn btn-warning btn-premium">
+                            <i class="bi bi-save me-2"></i>Cập nhật
+                        </button>
+                        <a href="/thanhtoan" class="btn btn-outline-light">
+                            <i class="bi bi-arrow-left me-2"></i>Quay lại
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <%- include('partials/footer') %>
+    <%- include('partials/javascript') %>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <%- include('partials/head') %>
+</head>
+<body>
+<%- include('partials/navbar') %>
+
+<div class="container page-shell">
+    <% if (typeof message !== 'undefined' && message) { %>
+        <div class="mb-4 mt-3">
+            <%- message %>
+        </div>
+    <% } %>
+
+    <!-- HERO MINI -->
+    <section class="page-hero-mini mb-4">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-4">
+            <div>
+                <span class="page-kicker">TCT AUTO SHOWROOM</span>
+                <h1 class="page-title mb-2">Danh sách xe</h1>
+                <p class="page-desc mb-0">
+                    Khám phá các mẫu xe cao cấp, hiện đại và nổi bật đang có tại showroom.
+                </p>
+            </div>
+
+            <div class="d-flex gap-3 flex-wrap">
+                <div class="mini-stat-box">
+                    <span class="mini-stat-label">
+                        <i class="bi bi-car-front me-1"></i>Tổng xe
+                    </span>
+                    <strong><%= xe.length %></strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DANH SÁCH XE -->
+    <section class="premium-panel p-4 p-lg-5">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+            <div>
+                <h4 class="fw-bold mb-1">
+                    <i class="bi bi-car-front-fill text-warning me-2"></i>Các mẫu xe nổi bật
+                </h4>
+                <p class="page-desc mb-0">Bộ sưu tập xe đang được trưng bày tại showroom.</p>
+            </div>
+
+            <div class="table-meta-chip">
+                <i class="bi bi-stars me-2"></i>Luxury Collection
+            </div>
+        </div>
+
+        <% if (xe && xe.length > 0) { %>
+            <div class="row g-4">
+                <% xe.forEach((x) => { %>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card xe-card h-100">
+                            <div class="xe-image-wrap">
+                                <% if (x.HinhAnh) { %>
+                                    <img src="<%= x.HinhAnh %>" alt="<%= x.TenXe %>">
+                                <% } else { %>
+                                    <img src="https://via.placeholder.com/600x400?text=TCT+AUTO" alt="Không có ảnh">
+                                <% } %>
+
+                                <div class="xe-badge">
+                                    <%= x.DongXe ? x.DongXe.TenDongXe : 'Dòng xe' %>
+                                </div>
+                            </div>
+
+                            <div class="card-body p-4 d-flex flex-column">
+                                <h4 class="fw-bold mb-2"><%= x.TenXe %></h4>
+
+                                <div class="price-text fs-4 mb-4">
+                                    <%= Number(x.Gia || 0).toLocaleString('vi-VN') %> VNĐ
+                                </div>
+
+                                <div class="row g-3 mb-4">
+                                    <div class="col-6">
+                                        <div class="glass-card p-3 h-100">
+                                            <small class="d-block text-secondary mb-1">Năm sản xuất</small>
+                                            <strong><%= x.NamSanXuat || '---' %></strong>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="glass-card p-3 h-100">
+                                            <small class="d-block text-secondary mb-1">Màu sắc</small>
+                                            <strong><%= x.MauSac || 'Chưa có' %></strong>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="glass-card p-3 h-100">
+                                            <small class="d-block text-secondary mb-1">Số lượng</small>
+                                            <strong><%= x.SoLuong || 0 %> xe</strong>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="glass-card p-3 h-100">
+                                            <small class="d-block text-secondary mb-1">Dòng xe</small>
+                                            <strong><%= x.DongXe ? x.DongXe.TenDongXe : '---' %></strong>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-auto d-flex gap-2 flex-wrap">
+                                    <a href="/xe/chi-tiet/<%= x._id %>" class="btn btn-warning flex-fill">
+                                        <i class="bi bi-eye me-2"></i>Xem chi tiết
+                                    </a>
+
+                                    <a href="/datcoc/tao/<%= x._id %>" class="btn btn-outline-warning w-100 mt-2">
+                                        <i class="bi bi-wallet2 me-2"></i>Đặt cọc
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <div class="text-center py-5">
+                <div class="glass-card p-5">
+                    <i class="bi bi-car-front fs-1 text-warning d-block mb-3"></i>
+                    <h5 class="fw-bold mb-2">Chưa có mẫu xe nào</h5>
+                    <p class="section-subtitle mb-0">Hiện chưa có dữ liệu xe để hiển thị cho người dùng.</p>
+                </div>
+            </div>
+        <% } %>
+    </section>
+</div>
+
+<%- include('partials/footer') %>
+<%- include('partials/javascript') %>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!-- ===============================
+FILE: views/partials/navbar.ejs
+=============================== -->
+
+<nav class="navbar navbar-expand-lg navbar-dark custom-navbar fixed-top">
+    <div class="container">
+        <!-- Logo -->
+        <a class="navbar-brand fw-bold d-flex align-items-center" href="/">
+            <img src="/images/logo.png" alt="Logo" class="me-2" style="height:40px;">
+            <span>TCT AUTO</span>
+        </a>
+
+        <!-- Mobile Toggle -->
+        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+            data-bs-target="#mainNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNavbar">
+            <!-- MENU VIEW -->
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0 nav-center-links">
+                <li class="nav-item">
+                    <a class="nav-link <%= currentPath === '/' ? 'active' : '' %>" href="/">Trang chủ</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link <%= currentPath.startsWith('/xe') ? 'active' : '' %>" href="/xe">Danh sách xe</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link <%= currentPath.startsWith('/dongxe') ? 'active' : '' %>" href="/dongxe">Dòng
+                        xe</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link <%= currentPath.startsWith('/baiviet') ? 'active' : '' %>" href="/baiviet">Tin
+                        tức</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link <%= currentPath.startsWith('/gioithieu') ? 'active' : '' %>"
+                        href="/gioithieu">Giới thiệu</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link <%= currentPath.startsWith('/lienhe') ? 'active' : '' %>" href="/lienhe">Liên
+                        hệ</a>
+                </li>
+            </ul>
+
+            <!-- BÊN PHẢI -->
+            <div class="d-flex align-items-center gap-2 nav-auth-zone">
+                <!-- 🌗 NÚT THEME (ĐẶT Ở ĐÂY) -->
+    <button onclick="toggleTheme()" class="btn-theme">
+        <i class="bi bi-moon-stars"></i>
+    </button>
+
+                <% if (typeof session !=='undefined' && session && session.MaNguoiDung) { %>
+
+                    <% if (session.QuyenHan==='admin' ) { %>
+                        <!-- ADMIN -->
+                        <div class="dropdown">
+                            <button
+                                class="btn btn-outline-light rounded-pill px-4 py-2 fw-semibold admin-bs-btn dropdown-toggle"
+                                type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle me-2"></i>
+                                Admin Showroom
+                            </button>
+
+                            <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 admin-bs-menu">
+                                <li class="px-3 pt-2 pb-1 text-dark small">
+                                    Xin chào, <strong>
+                                        <%= session.HoVaTen %>
+                                    </strong>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item rounded-3 py-2" href="/dashboard">
+                                        <i class="bi bi-speedometer2 me-2"></i>Dashboarrd
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item rounded-3 py-2" href="/admin/xe">
+                                        <i class="bi bi-car-front me-2"></i>Quản lý xe
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item rounded-3 py-2" href="/admin/dongxe">
+                                        <i class="bi bi-grid-3x3-gap me-2"></i>Quản lý dòng xe
+                                    </a>
+                                    <!-- <a class="dropdown-item rounded-3 py-2" href="/dongxe">
+                                        <i class="bi bi-grid-3x3-gap me-2"></i>Quản lý dòng xe
+                                    </a> -->
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item rounded-3 py-2" href="/baiviet/quanly">
+                                        <i class="bi bi-journal-text me-2"></i>Quản lý bài viết
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item rounded-3 py-2" href="/datcoc">
+                                        <i class="bi bi-wallet2 me-2"></i>Quản lý đặt cọc
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item rounded-3 py-2" href="/khachhang">
+                                        <i class="bi bi-people me-2"></i>Quản lý khách hàng
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="dropdown-item rounded-3 py-2" href="/thanhtoan">
+                                        <i class="bi bi-credit-card-2-front me-2"></i>Quản lý thanh toán
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item rounded-3 py-2 text-danger" href="/dangxuat">
+                                        <i class="bi bi-box-arrow-right me-2"></i>Đăng xuất
+                                    </a>
+                                </li>
+
+
+                            </ul>
+                        </div>
+
+                        <% } else { %>
+                            <!-- USER THƯỜNG -->
+                            <div class="dropdown">
+                                <button class="btn btn-outline-light rounded-pill px-4 py-2 fw-semibold dropdown-toggle"
+                                    type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-person-circle me-2"></i>
+                                    <%= session.HoVaTen || 'Tài khoản' %>
+                                </button>
+
+                                <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 admin-bs-menu">
+                                    <li class="px-3 pt-2 pb-1 text-dark small">
+                                        Xin chào, <strong>
+                                            <%= session.HoVaTen %>
+                                        </strong>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item rounded-3 py-2 text-danger" href="/dangxuat">
+                                            <i class="bi bi-box-arrow-right me-2"></i>Đăng xuất
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <% } %>
+
+                                <% } else { %>
+                                    <a href="/dangnhap" class="btn btn-outline-light rounded-pill px-4">Đăng nhập</a>
+                                    <a href="/dangky" class="btn btn-warning rounded-pill px-4 fw-semibold">Đăng ký</a>
+                                    <% } %>
+            </div>
+        </div>
+    </div>
+
+    <script>
+function toggleTheme() {
+    document.body.classList.toggle("light-mode");
+
+    // lưu trạng thái
+    if(document.body.classList.contains("light-mode")) {
+        localStorage.setItem("theme", "light");
+    } else {
+        localStorage.setItem("theme", "dark");
+    }
+}
+
+// load lại theme
+window.onload = () => {
+    if(localStorage.getItem("theme") === "light") {
+        document.body.classList.add("light-mode");
+    }
+}
+</script>
+</nav>
